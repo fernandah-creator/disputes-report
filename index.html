@@ -54,6 +54,53 @@
   .month-stat:last-child { border-bottom: none; }
   .month-stat-label { color: #888780; }
   .month-stat-value { font-weight: 600; }
+
+  /* AI Analysis card */
+  .ai-card { background: #fff; border: 1px solid #e0dfd8; border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; position: relative; overflow: hidden; }
+  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #0c447c, #1D9E75); }
+  .ai-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .ai-card-icon { width: 28px; height: 28px; background: #0c447c; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; flex-shrink: 0; }
+  .ai-card-title { font-size: 13px; font-weight: 600; color: #1a1a18; }
+  .ai-card-subtitle { font-size: 11px; color: #888780; }
+  .ai-body { font-size: 13px; color: #2a2a28; line-height: 1.8; }
+  .ai-body p { margin-bottom: 10px; }
+  .ai-body p:last-child { margin-bottom: 0; }
+  .ai-loading { font-size: 13px; color: #888780; font-style: italic; }
+
+  /* Tooltip styles */
+  .tooltip-wrap { display: inline-block; position: relative; cursor: help; border-bottom: 1px dashed #b4b2a9; }
+  .tooltip-wrap .tooltip-box {
+    visibility: hidden; opacity: 0; transition: opacity 0.2s;
+    position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    background: #1a1a18; color: #fff; font-size: 11px; line-height: 1.5;
+    padding: 8px 12px; border-radius: 6px; white-space: nowrap; max-width: 260px;
+    white-space: normal; width: max-content; max-width: 240px; z-index: 100;
+    pointer-events: none;
+  }
+  .tooltip-wrap .tooltip-box::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: #1a1a18;
+  }
+  .tooltip-wrap:hover .tooltip-box { visibility: visible; opacity: 1; }
+
+  /* Lifecycle timeline */
+  .lifecycle { display: flex; align-items: flex-start; gap: 0; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+  .lifecycle-step { flex: 1; min-width: 120px; position: relative; }
+  .lifecycle-step::before {
+    content: ''; position: absolute; top: 18px; left: 50%; width: 100%; height: 2px;
+    background: #e0dfd8; z-index: 0;
+  }
+  .lifecycle-step:last-child::before { display: none; }
+  .lifecycle-dot { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; position: relative; z-index: 1; }
+  .lifecycle-label { font-size: 10px; font-weight: 600; text-align: center; color: #1a1a18; margin-bottom: 3px; }
+  .lifecycle-sub { font-size: 10px; text-align: center; color: #888780; line-height: 1.4; }
+  .lifecycle-time { font-size: 9px; text-align: center; color: #b4b2a9; margin-top: 3px; font-style: italic; }
+
+  /* Glossary */
+  .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .glossary-item { background: #faf9f7; border: 0.5px solid #e0dfd8; border-radius: 8px; padding: 12px 14px; }
+  .glossary-term { font-size: 11px; font-weight: 700; color: #0c447c; margin-bottom: 4px; }
+  .glossary-def { font-size: 11px; color: #5f5e5a; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -66,43 +113,78 @@
     <div class="header-right">Generated April 2026<br>Disputes Operations</div>
   </div>
 
+  <!-- AI ANALYSIS -->
+  <div class="ai-card" id="ai-card">
+    <div class="ai-card-header">
+      <div class="ai-card-icon">✦</div>
+      <div>
+        <div class="ai-card-title">AI Analysis — Jan – March</div>
+        <div class="ai-card-subtitle">Automated interpretation of this period's dispute patterns</div>
+      </div>
+    </div>
+    <div class="ai-body" id="ai-body">
+      <p class="ai-loading">Generating analysis…</p>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
   <div class="section">
     <div class="section-label">Section 1 · Dispute outcomes — 3-month total</div>
     <div class="metrics4">
       <div class="metric">
         <div class="metric-label">Total tickets</div>
-        <div class="metric-value">986</div>
+        <div class="metric-value">987</div>
         <div class="metric-sub">3-month combined</div>
       </div>
       <div class="metric">
-        <div class="metric-label">Disputes opened</div>
-        <div class="metric-value blue">354 <span style="font-size:13px;font-weight:400">· 35.9%</span></div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Disputes opened
+            <span class="tooltip-box">Cases where a formal chargeback was filed with the card network. Excludes tickets closed without action (no response, below $15, not eligible).</span>
+          </span>
+        </div>
+        <div class="metric-value blue">355 <span style="font-size:13px;font-weight:400">· 36.0%</span></div>
       </div>
       <div class="metric">
         <div class="metric-label">Not eligible</div>
         <div class="metric-value gray">125 <span style="font-size:13px;font-weight:400">· 12.7%</span></div>
       </div>
       <div class="metric">
-        <div class="metric-label">In progress</div>
-        <div class="metric-value amber">66.9%</div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">In progress
+            <span class="tooltip-box">Disputes awaiting network response: Evidence Submitted, 2nd Presentment, or Pre-Arbitration stage. Outcome still pending.</span>
+          </span>
+        </div>
+        <div class="metric-value amber">66.8%</div>
         <div class="metric-sub">237 cases pending</div>
       </div>
     </div>
     <div class="metrics4">
       <div class="metric">
-        <div class="metric-label">Win rate</div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Win rate
+            <span class="tooltip-box">% of opened disputes won via card network (1st or 2nd presentment). Calculated over disputes opened — excludes tickets closed without filing.</span>
+          </span>
+        </div>
         <div class="metric-value green">13.8%</div>
         <div class="metric-usd green">$18,635 recovered</div>
         <div class="metric-sub">49 disputes won</div>
       </div>
       <div class="metric">
-        <div class="metric-label">Refund rate</div>
-        <div class="metric-value blue">17.2%</div>
-        <div class="metric-usd blue">$5,491 recovered</div>
-        <div class="metric-sub">61 refunded by merchant</div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Refund rate
+            <span class="tooltip-box">% of opened disputes where the merchant voluntarily returned funds. Does not require network ruling — faster resolution.</span>
+          </span>
+        </div>
+        <div class="metric-value blue">17.5%</div>
+        <div class="metric-usd blue">$5,493 recovered</div>
+        <div class="metric-sub">62 refunded by merchant</div>
       </div>
       <div class="metric">
-        <div class="metric-label">Loss rate</div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Loss rate
+            <span class="tooltip-box">% of opened disputes rejected by the card network after filing. These represent confirmed financial losses where recovery was not possible.</span>
+          </span>
+        </div>
         <div class="metric-value red">0.3%</div>
         <div class="metric-usd red">$88 lost</div>
         <div class="metric-sub">1 rejected by network</div>
@@ -110,7 +192,7 @@
       <div class="metric highlight">
         <div class="metric-label">Highlight month</div>
         <div class="metric-value blue">March 2026</div>
-        <div class="metric-sub">475 tickets · 0 won · 164 in progress</div>
+        <div class="metric-sub">476 tickets · 0 won · 164 in progress</div>
       </div>
     </div>
 
@@ -137,9 +219,9 @@
       </div>
       <div class="month-card highlight">
         <div class="month-card-title">March <span class="badge">HIGHLIGHT</span></div>
-        <div class="month-stat"><span class="month-stat-label">Total tickets</span><span class="month-stat-value">475</span></div>
+        <div class="month-stat"><span class="month-stat-label">Total tickets</span><span class="month-stat-value">476</span></div>
         <div class="month-stat"><span class="month-stat-label">Won</span><span class="month-stat-value green">0 · 0.0%</span></div>
-        <div class="month-stat"><span class="month-stat-label">Refunded</span><span class="month-stat-value blue">15</span></div>
+        <div class="month-stat"><span class="month-stat-label">Refunded</span><span class="month-stat-value blue">16</span></div>
         <div class="month-stat"><span class="month-stat-label">Lost</span><span class="month-stat-value red">0</span></div>
         <div class="month-stat"><span class="month-stat-label">In progress</span><span class="month-stat-value amber">164</span></div>
         <div class="month-stat"><span class="month-stat-label">Credits issued</span><span class="month-stat-value">$44,604</span></div>
@@ -168,12 +250,17 @@
 
   <hr class="divider">
 
+  <!-- SECTION 2 -->
   <div class="section">
     <div class="section-label">Section 2 · Temporary credit &amp; financial loss</div>
     <div class="metrics4">
       <div class="metric">
-        <div class="metric-label">Credits issued</div>
-        <div class="metric-value blue">250 <span style="font-size:13px;font-weight:400">· 25.4%</span></div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Credits issued
+            <span class="tooltip-box">Temporary credits given to the client while the dispute is under investigation. These are reversed if the dispute is lost, or become permanent if won.</span>
+          </span>
+        </div>
+        <div class="metric-value blue">250 <span style="font-size:13px;font-weight:400">· 25.3%</span></div>
         <div class="metric-usd blue">$84,762</div>
       </div>
       <div class="metric">
@@ -182,13 +269,21 @@
         <div class="metric-usd green">$9,736</div>
       </div>
       <div class="metric">
-        <div class="metric-label">Still open</div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Still open
+            <span class="tooltip-box">Credits issued on disputes still in progress (Evidence Submitted / 2nd Presentment). These may still be recovered once the network responds.</span>
+          </span>
+        </div>
         <div class="metric-value amber">72.9%</div>
         <div class="metric-usd amber">$61,763</div>
         <div class="metric-sub">outcome pending</div>
       </div>
       <div class="metric">
-        <div class="metric-label">Confirmed financial loss</div>
+        <div class="metric-label">
+          <span class="tooltip-wrap">Confirmed financial loss
+            <span class="tooltip-box">Credits issued on cases with a final non-winning status: not eligible, below $15, stopped, lost, or merchant refunded. These are confirmed losses to Jeeves.</span>
+          </span>
+        </div>
         <div class="metric-value red">9.6% <span style="font-size:13px;font-weight:400">· 24</span></div>
         <div class="metric-usd red">$13,263</div>
       </div>
@@ -212,6 +307,7 @@
 
   <hr class="divider">
 
+  <!-- SECTION 3 -->
   <div class="section">
     <div class="section-label">Section 3 · Dispute reasons</div>
     <div class="charts2eq">
@@ -223,37 +319,49 @@
         <div class="card-title">Dispute reason — cases &amp; share</div>
         <table>
           <thead><tr><th>Reason</th><th>Cases</th><th>% of total</th></tr></thead>
-          <tbody><tr><td>transaction not recognised</td><td>761</td><td style="font-weight:700;color:#0c447c">77.2%</td></tr><tr><td>transaction not authorised</td><td>63</td><td style="font-weight:700;color:#0c447c">6.4%</td></tr><tr><td>duplicate transaction</td><td>42</td><td style="font-weight:700;color:#0c447c">4.3%</td></tr><tr><td>other</td><td>41</td><td style="font-weight:700;color:#0c447c">4.2%</td></tr><tr><td>transaction cancelled still charged</td><td>30</td><td style="font-weight:700;color:#0c447c">3.0%</td></tr><tr><td>goods not received</td><td>24</td><td style="font-weight:700;color:#0c447c">2.4%</td></tr><tr><td>Unknown</td><td>15</td><td style="font-weight:700;color:#0c447c">1.5%</td></tr><tr><td>service not as described</td><td>10</td><td style="font-weight:700;color:#0c447c">1.0%</td></tr><tr class="total-row"><td>Total</td><td>986</td><td>100%</td></tr></tbody>
+          <tbody><tr><td>transaction not recognised</td><td>761</td><td style="font-weight:700;color:#0c447c">77.1%</td></tr><tr><td>transaction not authorised</td><td>63</td><td style="font-weight:700;color:#0c447c">6.4%</td></tr><tr><td>duplicate transaction</td><td>43</td><td style="font-weight:700;color:#0c447c">4.4%</td></tr><tr><td>other</td><td>41</td><td style="font-weight:700;color:#0c447c">4.2%</td></tr><tr><td>transaction cancelled still charged</td><td>30</td><td style="font-weight:700;color:#0c447c">3.0%</td></tr><tr><td>goods not received</td><td>24</td><td style="font-weight:700;color:#0c447c">2.4%</td></tr><tr><td>Unknown</td><td>15</td><td style="font-weight:700;color:#0c447c">1.5%</td></tr><tr><td>service not as described</td><td>10</td><td style="font-weight:700;color:#0c447c">1.0%</td></tr><tr class="total-row"><td>Total</td><td>987</td><td>100%</td></tr></tbody>
         </table>
+        <div class="note" style="margin-top:12px">
+          <strong>Transaction not recognised</strong> is consistently the dominant reason (~80% of cases), indicating fraud or forgotten transactions. <strong>Duplicate</strong> and <strong>Cancelled / still charged</strong> are the most actionable categories to tackle with merchant controls.
+        </div>
       </div>
     </div>
   </div>
 
   <hr class="divider">
 
+  <!-- SECTION 4 -->
   <div class="section">
-    <div class="section-label">Section 4 · Card type, processor &amp; 3DS</div>
+    <div class="section-label">Section 4 · Card type, processor &amp; 3DS authentication</div>
     <div class="charts3">
       <div class="card">
         <div class="card-title">Card type — detail</div>
         <table><thead><tr><th>Type</th><th>Cases</th><th>%</th></tr></thead>
-        <tbody><tr><td>virtual</td><td>564</td><td style="font-weight:700">57.2%</td></tr><tr><td>physical</td><td>422</td><td style="font-weight:700">42.8%</td></tr><tr class="total-row"><td>Total</td><td>986</td><td>100%</td></tr></tbody></table>
+        <tbody><tr><td>virtual</td><td>565</td><td style="font-weight:700">57.2%</td></tr><tr><td>physical</td><td>422</td><td style="font-weight:700">42.8%</td></tr><tr class="total-row"><td>Total</td><td>987</td><td>100%</td></tr></tbody></table>
       </div>
       <div class="card">
         <div class="card-title">Processor — detail</div>
         <table><thead><tr><th>Processor</th><th>Cases</th><th>%</th></tr></thead>
-        <tbody><tr><td>tutuka</td><td>537</td><td style="font-weight:700">54.5%</td></tr><tr><td>tutukaBrazil</td><td>242</td><td style="font-weight:700">24.5%</td></tr><tr><td>tutukaColombia</td><td>117</td><td style="font-weight:700">11.9%</td></tr><tr><td>stripeUS</td><td>64</td><td style="font-weight:700">6.5%</td></tr><tr><td>stripeUK</td><td>13</td><td style="font-weight:700">1.3%</td></tr><tr><td>stripeEUR</td><td>8</td><td style="font-weight:700">0.8%</td></tr><tr><td>marqetaCanada</td><td>5</td><td style="font-weight:700">0.5%</td></tr><tr class="total-row"><td>Total</td><td>986</td><td>100%</td></tr></tbody></table>
+        <tbody><tr><td>tutuka</td><td>538</td><td style="font-weight:700">54.5%</td></tr><tr><td>tutukaBrazil</td><td>242</td><td style="font-weight:700">24.5%</td></tr><tr><td>tutukaColombia</td><td>117</td><td style="font-weight:700">11.9%</td></tr><tr><td>stripeUS</td><td>64</td><td style="font-weight:700">6.5%</td></tr><tr><td>stripeUK</td><td>13</td><td style="font-weight:700">1.3%</td></tr><tr><td>stripeEUR</td><td>8</td><td style="font-weight:700">0.8%</td></tr><tr><td>marqetaCanada</td><td>5</td><td style="font-weight:700">0.5%</td></tr><tr class="total-row"><td>Total</td><td>987</td><td>100%</td></tr></tbody></table>
       </div>
       <div class="card">
-        <div class="card-title">3DS authentication</div>
+        <div class="card-title">
+          <span class="tooltip-wrap">3DS authentication
+            <span class="tooltip-box">3D Secure is an extra authentication layer (like a one-time password) that shifts fraud liability from the issuer to the merchant. Authenticated transactions are extremely difficult to dispute.</span>
+          </span>
+        </div>
         <table><thead><tr><th>Status</th><th>Cases</th><th>%</th></tr></thead>
-        <tbody><tr><td>No signal</td><td>806</td><td style="font-weight:700">81.7%</td></tr><tr><td>MDES</td><td>98</td><td style="font-weight:700">9.9%</td></tr><tr><td>3DS</td><td>59</td><td style="font-weight:700">6.0%</td></tr><tr><td>attempt_acknowledged</td><td>22</td><td style="font-weight:700">2.2%</td></tr><tr><td>authenticated</td><td>1</td><td style="font-weight:700">0.1%</td></tr><tr class="total-row"><td>Total</td><td>986</td><td>100%</td></tr></tbody></table>
+        <tbody><tr><td>No signal</td><td>807</td><td style="font-weight:700">81.8%</td></tr><tr><td>MDES</td><td>98</td><td style="font-weight:700">9.9%</td></tr><tr><td>3DS</td><td>59</td><td style="font-weight:700">6.0%</td></tr><tr><td>attempt_acknowledged</td><td>22</td><td style="font-weight:700">2.2%</td></tr><tr><td>authenticated</td><td>1</td><td style="font-weight:700">0.1%</td></tr><tr class="total-row"><td>Total</td><td>987</td><td>100%</td></tr></tbody></table>
+        <div class="note" style="margin-top:10px">
+          Transactions without 3DS signal represent the highest fraud risk. Fully authenticated transactions (3DS = Authenticated) are almost always non-disputable.
+        </div>
       </div>
     </div>
   </div>
 
   <hr class="divider">
 
+  <!-- SECTION 5 -->
   <div class="section">
     <div class="section-label">Section 5 · Top merchant categories (MCC)</div>
     <div class="charts2">
@@ -262,9 +370,168 @@
         <div style="position:relative;width:100%;height:300px;"><canvas id="bar5"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">MCC breakdown</div>
+        <div class="card-title">
+          <span class="tooltip-wrap">MCC breakdown
+            <span class="tooltip-box">MCC = Merchant Category Code. A 4-digit code assigned by card networks to classify the type of business. Used to identify dispute patterns by merchant type.</span>
+          </span>
+        </div>
         <table><thead><tr><th>MCC</th><th>Category</th><th>Cases</th><th>%</th></tr></thead>
-        <tbody><tr><td>5399</td><td class="left">—</td><td>152</td><td style="font-weight:700">15.4%</td></tr><tr><td>5812</td><td class="left">—</td><td>125</td><td style="font-weight:700">12.7%</td></tr><tr><td>4121</td><td class="left">—</td><td>88</td><td style="font-weight:700">8.9%</td></tr><tr><td>5814</td><td class="left">—</td><td>56</td><td style="font-weight:700">5.7%</td></tr><tr><td>7311</td><td class="left">—</td><td>45</td><td style="font-weight:700">4.6%</td></tr><tr><td>4722</td><td class="left">—</td><td>33</td><td style="font-weight:700">3.3%</td></tr><tr><td>5734</td><td class="left">—</td><td>31</td><td style="font-weight:700">3.1%</td></tr><tr><td>4816</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.7%</td></tr><tr><td>7372</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.7%</td></tr><tr><td>7399</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.7%</td></tr><tr><td>5411</td><td class="left">—</td><td>26</td><td style="font-weight:700">2.6%</td></tr><tr><td>5818</td><td class="left">—</td><td>24</td><td style="font-weight:700">2.4%</td></tr><tr class="total-row"><td colspan="2">Total</td><td>986</td><td>100%</td></tr></tbody></table>
+        <tbody><tr><td>5399</td><td class="left">—</td><td>152</td><td style="font-weight:700">15.4%</td></tr><tr><td>5812</td><td class="left">—</td><td>125</td><td style="font-weight:700">12.7%</td></tr><tr><td>4121</td><td class="left">—</td><td>89</td><td style="font-weight:700">9.0%</td></tr><tr><td>5814</td><td class="left">—</td><td>56</td><td style="font-weight:700">5.7%</td></tr><tr><td>7311</td><td class="left">—</td><td>45</td><td style="font-weight:700">4.6%</td></tr><tr><td>4722</td><td class="left">—</td><td>33</td><td style="font-weight:700">3.3%</td></tr><tr><td>5734</td><td class="left">—</td><td>31</td><td style="font-weight:700">3.1%</td></tr><tr><td>4816</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.7%</td></tr><tr><td>7372</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.7%</td></tr><tr><td>7399</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.7%</td></tr><tr><td>5411</td><td class="left">—</td><td>26</td><td style="font-weight:700">2.6%</td></tr><tr><td>5818</td><td class="left">—</td><td>24</td><td style="font-weight:700">2.4%</td></tr><tr class="total-row"><td colspan="2">Total</td><td>987</td><td>100%</td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 6 — BPS -->
+  <div class="section">
+    <div class="section-label">Section 6 · Chargeback basis points (BPS) — Tutuka processors</div>
+    <div class="metrics4">
+      <div class="metric">
+        <div class="metric-label">Total tx volume (3 months)</div>
+        <div class="metric-value blue">$245.9M</div>
+        <div class="metric-sub">Tutuka processors only</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">
+          <span class="tooltip-wrap">Overall BPS
+            <span class="tooltip-box">Basis Points = (total disputed amount ÷ total transaction volume) × 10,000. Measures the share of volume that is disputed. Below 5 bps is healthy; above 8 bps may trigger processor review.</span>
+          </span>
+        </div>
+        <div class="metric-value green">0.98 bps</div>
+        <div class="metric-sub">3-month average</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">BPS — Jan</div>
+        <div class="metric-value green">1.77 bps</div>
+      </div>
+      <div class="metric highlight">
+        <div class="metric-label">BPS — March (highlight)</div>
+        <div class="metric-value green">0.11 bps</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title">Monthly BPS — chargeback basis points</div>
+      <div style="position:relative;width:100%;height:200px;"><canvas id="bpsLine"></canvas></div>
+    </div>
+    <div class="note">
+      <strong>BPS = (disputed amount / total transaction volume) × 10,000.</strong> Volume data covers Tutuka, Tutuka Brazil, and Tutuka Colombia only — Stripe and Marqeta are not included. A BPS below 5 is generally healthy; above 8 bps may trigger processor monitoring programs.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 7 — DISPUTE LIFECYCLE -->
+  <div class="section">
+    <div class="section-label">Section 7 · How a dispute works — lifecycle &amp; timelines</div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title">Dispute lifecycle — from ticket to resolution</div>
+      <div class="lifecycle" style="margin-top:8px">
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#f1efe8;border:2px solid #b4b2a9;">🎫</div>
+          <div class="lifecycle-label">Ticket opened</div>
+          <div class="lifecycle-sub">Client reports unrecognised or disputed transaction</div>
+          <div class="lifecycle-time">Day 0</div>
+        </div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#e6f1fb;border:2px solid #378ADD;">🔍</div>
+          <div class="lifecycle-label">Review</div>
+          <div class="lifecycle-sub">Eligibility checked · credit may be issued</div>
+          <div class="lifecycle-time">Day 1–3</div>
+        </div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#e6f1fb;border:2px solid #0c447c;">📋</div>
+          <div class="lifecycle-label">Filed (1st)</div>
+          <div class="lifecycle-sub">Chargeback filed with card network (Visa/MC)</div>
+          <div class="lifecycle-time">Day 3–10</div>
+        </div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#fef6e4;border:2px solid #EF9F27;">📄</div>
+          <div class="lifecycle-label">Evidence</div>
+          <div class="lifecycle-sub">Merchant responds with evidence to rebut the claim</div>
+          <div class="lifecycle-time">Up to 45 days</div>
+        </div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#fef6e4;border:2px solid #EF9F27;">🔄</div>
+          <div class="lifecycle-label">2nd Presentment</div>
+          <div class="lifecycle-sub">We re-submit dispute after reviewing merchant evidence</div>
+          <div class="lifecycle-time">+30 days</div>
+        </div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#e8f7f2;border:2px solid #1D9E75;">✅</div>
+          <div class="lifecycle-label">Won</div>
+          <div class="lifecycle-sub">Network rules in our favour · funds recovered</div>
+          <div class="lifecycle-time">45–120 days</div>
+        </div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" style="background:#fdf0f0;border:2px solid #E24B4A;">✗</div>
+          <div class="lifecycle-label">Lost</div>
+          <div class="lifecycle-sub">Network rules for merchant · credit becomes permanent loss</div>
+          <div class="lifecycle-time">45–120 days</div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:8px">
+        A dispute can take <strong>45 to 120 days</strong> from filing to final resolution. Cases showing as <strong>In Progress</strong> are currently at the Evidence Submitted or 2nd Presentment stage and are still within the normal resolution window. <strong>Pre-Arbitration</strong> is a further escalation stage that can add another 30–45 days.
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 8 — GLOSSARY -->
+  <div class="section">
+    <div class="section-label">Section 8 · Glossary</div>
+    <div class="card">
+      <div class="card-title">Key terms explained</div>
+      <div class="glossary-grid" style="margin-top:8px">
+        <div class="glossary-item">
+          <div class="glossary-term">Chargeback</div>
+          <div class="glossary-def">A forced reversal of a card transaction initiated by the card network on behalf of the cardholder. The merchant is debited and the issuer (Jeeves) recovers funds.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Win Rate</div>
+          <div class="glossary-def">Percentage of filed disputes where the card network ruled in our favour. Calculated over opened disputes only — not over all tickets.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Temporary Credit</div>
+          <div class="glossary-def">A provisional credit given to the client while the dispute is pending. Reversed if the dispute is lost; becomes permanent if won.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Financial Loss</div>
+          <div class="glossary-def">A credit issued on a case that ended in a non-winning status (lost, not eligible, stopped, below $15). Confirmed cost to Jeeves.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">BPS (Basis Points)</div>
+          <div class="glossary-def">Disputed amount as a fraction of total transaction volume, × 10,000. E.g., 5 bps = 0.05% of volume disputed. Processors monitor this metric.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">2nd Presentment</div>
+          <div class="glossary-def">A second round of the dispute filed after reviewing the merchant's evidence rebuttal. Last chance before Pre-Arbitration.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Pre-Arbitration</div>
+          <div class="glossary-def">An escalation stage where the card network acts as arbitrator. Higher fees apply. Used when both parties maintain their position after 2nd presentment.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">3DS (3D Secure)</div>
+          <div class="glossary-def">Authentication protocol (Verified by Visa / Mastercard SecureCode). If authenticated, fraud liability shifts to the merchant — making chargebacks very hard to file.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Not Eligible</div>
+          <div class="glossary-def">Transaction cannot be disputed via the card network — often because it exceeded the 120-day dispute window or falls under a non-disputable transaction type.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">MCC (Merchant Category Code)</div>
+          <div class="glossary-def">4-digit code assigned by card networks to classify merchant type. E.g., 4121 = Taxicabs/Rideshare, 7372 = Software/SaaS. Used to spot dispute concentration by industry.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Stopped</div>
+          <div class="glossary-def">Dispute was intentionally not continued after reviewing merchant evidence — typically when the evidence was compelling enough to justify stopping the process.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Refunded by Merchant</div>
+          <div class="glossary-def">Merchant returned funds voluntarily (without a network ruling). Faster than a chargeback win and avoids dispute fees. Counted as a recovery.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -274,7 +541,7 @@
 
 <script>
 const months = ["Jan","Feb","March"];
-const D = [{"won":36,"wonUSD":8684.763860100004,"prog":14,"lost":0,"lostUSD":0,"ref":41,"refUSD":4087.62915407,"stop":2,"cred":57,"credUSD":13692.229313569997,"wonCusd":8684.763860100004,"progCusd":4835.642494920001,"finL":12,"finLusd":171.82295854999995},{"won":13,"wonUSD":9949.739919130001,"prog":59,"lost":1,"lostUSD":87.76184573,"ref":5,"refUSD":340.18235167999995,"stop":3,"cred":50,"credUSD":26465.28987830001,"wonCusd":1051.37792513,"progCusd":12523.63849154,"finL":8,"finLusd":12890.273461629999},{"won":0,"wonUSD":0,"prog":164,"lost":0,"lostUSD":0,"ref":15,"refUSD":1063.5044425099998,"stop":1,"cred":143,"credUSD":44604.13585887999,"wonCusd":0,"progCusd":44403.489058179985,"finL":4,"finLusd":200.6468007}];
+const D = [{"won":36,"wonUSD":8684.763860100004,"prog":14,"lost":0,"lostUSD":0,"ref":41,"refUSD":4087.62915407,"stop":2,"cred":57,"credUSD":13692.229313569997,"wonCusd":8684.763860100004,"progCusd":4835.642494920001,"finL":12,"finLusd":171.82295854999995},{"won":13,"wonUSD":9949.739919130001,"prog":59,"lost":1,"lostUSD":87.76184573,"ref":5,"refUSD":340.18235167999995,"stop":3,"cred":50,"credUSD":26465.28987830001,"wonCusd":1051.37792513,"progCusd":12523.63849154,"finL":8,"finLusd":12890.273461629999},{"won":0,"wonUSD":0,"prog":164,"lost":0,"lostUSD":0,"ref":16,"refUSD":1064.8903892099997,"stop":1,"cred":143,"credUSD":44604.13585887999,"wonCusd":0,"progCusd":44403.489058179985,"finL":4,"finLusd":200.6468007}];
 const OPTS = {responsive:true, maintainAspectRatio:false};
 const gridY = {color:'rgba(0,0,0,0.05)'};
 const tickSm = {font:{size:10}};
@@ -309,20 +576,68 @@ new Chart(document.getElementById('line2'),{type:'line',data:{labels:months,data
 ]},options:{...OPTS,plugins:{legend:{display:false}},
   scales:{x:{ticks:{...tickSm,autoSkip:false},grid:{display:false}},y:{ticks:{...tickSm,callback:v=>v+'%'},grid:gridY,min:0}}}});
 
-const reasonLabels = ["transaction not recognised (761)","transaction not authorised (63)","duplicate transaction (42)","other (41)","transaction cancelled still charged (30)","goods not received (24)","Unknown (15)","service not as described (10)"];
-const reasonData   = [761,63,42,41,30,24,15,10];
+const reasonLabels = ["transaction not recognised (761)","transaction not authorised (63)","duplicate transaction (43)","other (41)","transaction cancelled still charged (30)","goods not received (24)","Unknown (15)","service not as described (10)"];
+const reasonData   = [761,63,43,41,30,24,15,10];
 new Chart(document.getElementById('donut3'),{type:'doughnut',data:{
   labels:reasonLabels,
   datasets:[{data:reasonData,backgroundColor:['#0c447c','#378ADD','#85B7EB','#EF9F27','#B4B2A9','#1D9E75','#9FE1CB','#D3D1C7'],borderWidth:2,borderColor:'#fff'}]
 },options:{...OPTS,cutout:'58%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},padding:6,boxWidth:10,boxHeight:10}},tooltip:{callbacks:{label:ctx=>ctx.raw+' cases'}}}}});
 
 const mccLabels = ["5399","5812","4121","5814","7311","4722","5734","4816","7372","7399","5411","5818"];
-const mccData   = [152,125,88,56,45,33,31,27,27,27,26,24];
+const mccData   = [152,125,89,56,45,33,31,27,27,27,26,24];
 new Chart(document.getElementById('bar5'),{type:'bar',data:{
   labels:mccLabels,
   datasets:[{data:mccData,backgroundColor:mccData.map((_,i)=>i===0?'#0c447c':i===1?'#185FA5':'#378ADD'),borderRadius:3}]
 },options:{...OPTS,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+' cases'}}},
   scales:{x:{ticks:tickSm,grid:gridY},y:{ticks:{font:{size:9.5}},grid:{display:false}}}}});
+
+// BPS chart
+const bpsVals = [1.77,1.36,0.11];
+new Chart(document.getElementById('bpsLine'),{type:'line',data:{labels:months,datasets:[
+  {label:'BPS',data:bpsVals,borderColor:'#0c447c',backgroundColor:'rgba(12,68,124,0.08)',
+   pointBackgroundColor:bpsVals.map(v=>v==null?'#0c447c':v>=7?'#791f1f':v<=4?'#0f6e56':'#EF9F27'),
+   pointRadius:7,tension:0.3,fill:true}
+]},options:{...OPTS,plugins:{legend:{display:false},
+  tooltip:{callbacks:{label:ctx=>ctx.raw!=null?' '+ctx.raw.toFixed(2)+' bps':'No data'}}},
+  scales:{x:{ticks:tickSm,grid:{display:false}},
+          y:{ticks:{...tickSm,callback:v=>v+' bps'},grid:gridY,min:0}}}});
+
+// AI Analysis via Anthropic API
+(async () => {
+  const aiBody = document.getElementById('ai-body');
+  try {
+    const prompt = `You are a disputes analyst at Jeeves, a corporate card fintech. Write a concise but insightful analysis (3–4 short paragraphs) of the following 3-month disputes data for the period Jan – March. Be direct, use specific numbers, and highlight what's notable — good or bad. End with 1–2 actionable recommendations.
+
+Key metrics:
+- Total tickets: 987 | Disputes opened: 355 (36.0%)
+- Win rate: 13.8% | Refund rate: 17.5% | Loss rate: 0.3%
+- Won amount: $18,635 | Lost amount: $88
+- Credits issued: 250 / $84,762 | Recovery rate: 11.5%
+- Financial loss confirmed: 24 cases / $13,263
+- In progress (pending): 237 cases
+- Chargeback BPS: 0.98 (Jan: 1.77 bps, Feb: 1.36 bps, March: 0.11 bps)
+- Top dispute reason: transaction_not_recognised (77.1%)
+- Top MCC: 5399
+- Highlight month: March 2026
+
+Write in plain English, no markdown formatting, no bullet points. Paragraphs only.`;
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.find(b => b.type === 'text')?.text || 'Analysis unavailable.';
+    aiBody.innerHTML = text.split('\n\n').filter(p=>p.trim()).map(p=>`<p>${p.trim()}</p>`).join('');
+  } catch(e) {
+    aiBody.innerHTML = '<p class="ai-loading">Analysis could not be loaded. Please refresh the page.</p>';
+  }
+})();
 </script>
 </body>
 </html>
