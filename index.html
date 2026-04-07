@@ -123,8 +123,7 @@
       </div>
     </div>
     <div class="ai-body" id="ai-body">
-      <p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Hi team,
-Attached is the March monthly disputes report; we saw a 16.8% win rate recovering $23,215, with 242 cases currently in progress. The full report is linked below.</p>
+      <p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Hi team,</p><p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Attached is the March monthly disputes report; we achieved a 16.8% win rate recovering $23,215, while 242 cases remain in progress. The full report is linked below.</p>
     </div>
   </div>
 
@@ -377,7 +376,7 @@ Attached is the March monthly disputes report; we saw a 16.8% win rate recoverin
           </span>
         </div>
         <table><thead><tr><th>MCC</th><th>Category</th><th>Cases</th><th>%</th></tr></thead>
-        <tbody><tr><td>5399</td><td class="left">—</td><td>152</td><td style="font-weight:700">14.8%</td></tr><tr><td>4121</td><td class="left">—</td><td>131</td><td style="font-weight:700">12.7%</td></tr><tr><td>5812</td><td class="left">—</td><td>125</td><td style="font-weight:700">12.1%</td></tr><tr><td>5814</td><td class="left">—</td><td>56</td><td style="font-weight:700">5.4%</td></tr><tr><td>7311</td><td class="left">—</td><td>45</td><td style="font-weight:700">4.4%</td></tr><tr><td>4722</td><td class="left">—</td><td>33</td><td style="font-weight:700">3.2%</td></tr><tr><td>5734</td><td class="left">—</td><td>31</td><td style="font-weight:700">3.0%</td></tr><tr><td>4816</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.6%</td></tr><tr><td>7372</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.6%</td></tr><tr><td>7399</td><td class="left">—</td><td>27</td><td style="font-weight:700">2.6%</td></tr><tr><td>5411</td><td class="left">—</td><td>26</td><td style="font-weight:700">2.5%</td></tr><tr><td>5818</td><td class="left">—</td><td>24</td><td style="font-weight:700">2.3%</td></tr><tr class="total-row"><td colspan="2">Total</td><td>1029</td><td>100%</td></tr></tbody></table>
+        <tbody><tr><td>5399</td><td class="left">Miscellaneous General Merchandise Stores</td><td>152</td><td style="font-weight:700">14.8%</td></tr><tr><td>4121</td><td class="left">Limousines and Taxicabs</td><td>131</td><td style="font-weight:700">12.7%</td></tr><tr><td>5812</td><td class="left">Eating Places, Restaurants</td><td>125</td><td style="font-weight:700">12.1%</td></tr><tr><td>5814</td><td class="left">Fast Food Restaurants</td><td>56</td><td style="font-weight:700">5.4%</td></tr><tr><td>7311</td><td class="left">Advertising Services</td><td>45</td><td style="font-weight:700">4.4%</td></tr><tr><td>4722</td><td class="left">Travel Agencies and Tour Operators</td><td>33</td><td style="font-weight:700">3.2%</td></tr><tr><td>5734</td><td class="left">Computer Software Stores</td><td>31</td><td style="font-weight:700">3.0%</td></tr><tr><td>7372</td><td class="left">Computer Programming, Data Processing, and Integrated Systems Design Services</td><td>27</td><td style="font-weight:700">2.6%</td></tr><tr><td>4816</td><td class="left">Computer Network/Information Services</td><td>27</td><td style="font-weight:700">2.6%</td></tr><tr><td>7399</td><td class="left">Business Services</td><td>27</td><td style="font-weight:700">2.6%</td></tr><tr><td>5411</td><td class="left">Grocery Stores, Supermarkets</td><td>26</td><td style="font-weight:700">2.5%</td></tr><tr><td>5818</td><td class="left">Digital Goods Multi-Category</td><td>24</td><td style="font-weight:700">2.3%</td></tr><tr class="total-row"><td colspan="2">Total</td><td>1029</td><td>100%</td></tr></tbody></table>
       </div>
     </div>
   </div>
@@ -584,7 +583,7 @@ new Chart(document.getElementById('donut3'),{type:'doughnut',data:{
   datasets:[{data:reasonData,backgroundColor:['#0c447c','#378ADD','#85B7EB','#EF9F27','#B4B2A9','#1D9E75','#9FE1CB','#D3D1C7'],borderWidth:2,borderColor:'#fff'}]
 },options:{...OPTS,cutout:'58%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},padding:6,boxWidth:10,boxHeight:10}},tooltip:{callbacks:{label:ctx=>ctx.raw+' cases'}}}}});
 
-const mccLabels = ["5399","4121","5812","5814","7311","4722","5734","4816","7372","7399","5411","5818"];
+const mccLabels = ["5399 - Miscellaneous General Merchand","4121 - Limousines and Taxicabs","5812 - Eating Places, Restaurants","5814 - Fast Food Restaurants","7311 - Advertising Services","4722 - Travel Agencies and Tour Opera","5734 - Computer Software Stores","7372 - Computer Programming, Data Pro","4816 - Computer Network/Information S","7399 - Business Services","5411 - Grocery Stores, Supermarkets","5818 - Digital Goods Multi-Category"];
 const mccData   = [152,131,125,56,45,33,31,27,27,27,26,24];
 new Chart(document.getElementById('bar5'),{type:'bar',data:{
   labels:mccLabels,
@@ -618,7 +617,7 @@ Key metrics:
 - In progress (pending): 242 cases
 - Chargeback BPS: 4.30 (Jan: 2.44 bps, Feb: 4.74 bps, March: 5.34 bps)
 - Top dispute reason: transaction_not_recognised (74.0%)
-- Top MCC: 5399
+- Top MCC: 5399|Miscellaneous General Merchandise Stores
 - Highlight month: March 2026
 
 Write in plain English, no markdown formatting, no bullet points. Paragraphs only.`;
