@@ -54,8 +54,6 @@
   .month-stat:last-child { border-bottom: none; }
   .month-stat-label { color: #888780; }
   .month-stat-value { font-weight: 600; }
-
-  /* AI Analysis card */
   .ai-card { background: #fff; border: 1px solid #e0dfd8; border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; position: relative; overflow: hidden; }
   .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #0c447c, #1D9E75); }
   .ai-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
@@ -66,8 +64,6 @@
   .ai-body p { margin-bottom: 10px; }
   .ai-body p:last-child { margin-bottom: 0; }
   .ai-loading { font-size: 13px; color: #888780; font-style: italic; }
-
-  /* Tooltip styles */
   .tooltip-wrap { display: inline-block; position: relative; cursor: help; border-bottom: 1px dashed #b4b2a9; }
   .tooltip-wrap .tooltip-box {
     visibility: hidden; opacity: 0; transition: opacity 0.2s;
@@ -82,8 +78,6 @@
     border: 5px solid transparent; border-top-color: #1a1a18;
   }
   .tooltip-wrap:hover .tooltip-box { visibility: visible; opacity: 1; }
-
-  /* Lifecycle timeline */
   .lifecycle { display: flex; align-items: flex-start; gap: 0; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
   .lifecycle-step { flex: 1; min-width: 120px; position: relative; }
   .lifecycle-step::before {
@@ -95,8 +89,6 @@
   .lifecycle-label { font-size: 10px; font-weight: 600; text-align: center; color: #1a1a18; margin-bottom: 3px; }
   .lifecycle-sub { font-size: 10px; text-align: center; color: #888780; line-height: 1.4; }
   .lifecycle-time { font-size: 9px; text-align: center; color: #b4b2a9; margin-top: 3px; font-style: italic; }
-
-  /* Glossary */
   .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .glossary-item { background: #faf9f7; border: 0.5px solid #e0dfd8; border-radius: 8px; padding: 12px 14px; }
   .glossary-term { font-size: 11px; font-weight: 700; color: #0c447c; margin-bottom: 4px; }
@@ -123,7 +115,7 @@
       </div>
     </div>
     <div class="ai-body" id="ai-body">
-      <p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Hi team,</p><p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Attached is the March monthly disputes report, highlighting a 16.8% win rate with $23,215 recovered and a chargeback rate of 4.30 bps. The full report is linked below for your review.</p>
+      <p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Hi team, here is the March monthly disputes report, with a 16.8% win rate resulting in $23,215 recovered and 242 cases currently in progress. The full report is linked below.</p>
     </div>
   </div>
 
@@ -204,6 +196,7 @@
         <div class="month-stat"><span class="month-stat-label">Refunded</span><span class="month-stat-value blue">41</span></div>
         <div class="month-stat"><span class="month-stat-label">Lost</span><span class="month-stat-value red">0</span></div>
         <div class="month-stat"><span class="month-stat-label">In progress</span><span class="month-stat-value amber">10</span></div>
+        <div class="month-stat"><span class="month-stat-label">Closed w/o dispute</span><span class="month-stat-value gray">189</span></div>
         <div class="month-stat"><span class="month-stat-label">Credits issued</span><span class="month-stat-value">$13,692</span></div>
         <div class="month-stat"><span class="month-stat-label">Financial loss</span><span class="month-stat-value red">$172</span></div>
       </div>
@@ -214,6 +207,7 @@
         <div class="month-stat"><span class="month-stat-label">Refunded</span><span class="month-stat-value blue">7</span></div>
         <div class="month-stat"><span class="month-stat-label">Lost</span><span class="month-stat-value red">1</span></div>
         <div class="month-stat"><span class="month-stat-label">In progress</span><span class="month-stat-value amber">48</span></div>
+        <div class="month-stat"><span class="month-stat-label">Closed w/o dispute</span><span class="month-stat-value gray">148</span></div>
         <div class="month-stat"><span class="month-stat-label">Credits issued</span><span class="month-stat-value">$27,224</span></div>
         <div class="month-stat"><span class="month-stat-label">Financial loss</span><span class="month-stat-value red">$291</span></div>
       </div>
@@ -224,6 +218,7 @@
         <div class="month-stat"><span class="month-stat-label">Refunded</span><span class="month-stat-value blue">21</span></div>
         <div class="month-stat"><span class="month-stat-label">Lost</span><span class="month-stat-value red">0</span></div>
         <div class="month-stat"><span class="month-stat-label">In progress</span><span class="month-stat-value amber">184</span></div>
+        <div class="month-stat"><span class="month-stat-label">Closed w/o dispute</span><span class="month-stat-value gray">312</span></div>
         <div class="month-stat"><span class="month-stat-label">Credits issued</span><span class="month-stat-value">$55,014</span></div>
         <div class="month-stat"><span class="month-stat-label">Financial loss</span><span class="month-stat-value red">$4,064</span></div>
       </div>
@@ -484,54 +479,18 @@
     <div class="card">
       <div class="card-title">Key terms explained</div>
       <div class="glossary-grid" style="margin-top:8px">
-        <div class="glossary-item">
-          <div class="glossary-term">Chargeback</div>
-          <div class="glossary-def">A forced reversal of a card transaction initiated by the card network on behalf of the cardholder. The merchant is debited and the issuer (Jeeves) recovers funds.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Win Rate</div>
-          <div class="glossary-def">Percentage of filed disputes where the card network ruled in our favour. Calculated over opened disputes only — not over all tickets.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Temporary Credit</div>
-          <div class="glossary-def">A provisional credit given to the client while the dispute is pending. Reversed if the dispute is lost; becomes permanent if won.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Financial Loss</div>
-          <div class="glossary-def">A credit issued on a case that ended in a non-winning status (lost, not eligible, stopped, below $15). Confirmed cost to Jeeves.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">BPS (Basis Points)</div>
-          <div class="glossary-def">Disputed amount as a fraction of total transaction volume, × 10,000. E.g., 5 bps = 0.05% of volume disputed. Processors monitor this metric.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">2nd Presentment</div>
-          <div class="glossary-def">A second round of the dispute filed after reviewing the merchant's evidence rebuttal. Last chance before Pre-Arbitration.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Pre-Arbitration</div>
-          <div class="glossary-def">An escalation stage where the card network acts as arbitrator. Higher fees apply. Used when both parties maintain their position after 2nd presentment.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">3DS (3D Secure)</div>
-          <div class="glossary-def">Authentication protocol (Verified by Visa / Mastercard SecureCode). If authenticated, fraud liability shifts to the merchant — making chargebacks very hard to file.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Not Eligible</div>
-          <div class="glossary-def">Transaction cannot be disputed via the card network — often because it exceeded the 120-day dispute window or falls under a non-disputable transaction type.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">MCC (Merchant Category Code)</div>
-          <div class="glossary-def">4-digit code assigned by card networks to classify merchant type. E.g., 4121 = Taxicabs/Rideshare, 7372 = Software/SaaS. Used to spot dispute concentration by industry.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Stopped</div>
-          <div class="glossary-def">Dispute was intentionally not continued after reviewing merchant evidence — typically when the evidence was compelling enough to justify stopping the process.</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Refunded by Merchant</div>
-          <div class="glossary-def">Merchant returned funds voluntarily (without a network ruling). Faster than a chargeback win and avoids dispute fees. Counted as a recovery.</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">Chargeback</div><div class="glossary-def">A forced reversal of a card transaction initiated by the card network on behalf of the cardholder. The merchant is debited and the issuer (Jeeves) recovers funds.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Win Rate</div><div class="glossary-def">Percentage of filed disputes where the card network ruled in our favour. Calculated over opened disputes only — not over all tickets.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Temporary Credit</div><div class="glossary-def">A provisional credit given to the client while the dispute is pending. Reversed if the dispute is lost; becomes permanent if won.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Financial Loss</div><div class="glossary-def">A credit issued on a case that ended in a non-winning status (lost, not eligible, stopped, below $15). Confirmed cost to Jeeves.</div></div>
+        <div class="glossary-item"><div class="glossary-term">BPS (Basis Points)</div><div class="glossary-def">Disputed amount as a fraction of total transaction volume, × 10,000. E.g., 5 bps = 0.05% of volume disputed. Processors monitor this metric.</div></div>
+        <div class="glossary-item"><div class="glossary-term">2nd Presentment</div><div class="glossary-def">A second round of the dispute filed after reviewing the merchant's evidence rebuttal. Last chance before Pre-Arbitration.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Pre-Arbitration</div><div class="glossary-def">An escalation stage where the card network acts as arbitrator. Higher fees apply. Used when both parties maintain their position after 2nd presentment.</div></div>
+        <div class="glossary-item"><div class="glossary-term">3DS (3D Secure)</div><div class="glossary-def">Authentication protocol (Verified by Visa / Mastercard SecureCode). If authenticated, fraud liability shifts to the merchant — making chargebacks very hard to file.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Not Eligible</div><div class="glossary-def">Transaction cannot be disputed via the card network — often because it exceeded the 120-day dispute window or falls under a non-disputable transaction type.</div></div>
+        <div class="glossary-item"><div class="glossary-term">MCC (Merchant Category Code)</div><div class="glossary-def">4-digit code assigned by card networks to classify merchant type. E.g., 4121 = Taxicabs/Rideshare, 7372 = Software/SaaS. Used to spot dispute concentration by industry.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Stopped</div><div class="glossary-def">Dispute was intentionally not continued after reviewing merchant evidence — typically when the evidence was compelling enough to justify stopping the process.</div></div>
+        <div class="glossary-item"><div class="glossary-term">Refunded by Merchant</div><div class="glossary-def">Merchant returned funds voluntarily (without a network ruling). Faster than a chargeback win and avoids dispute fees. Counted as a recovery.</div></div>
       </div>
     </div>
   </div>
@@ -591,7 +550,6 @@ new Chart(document.getElementById('bar5'),{type:'bar',data:{
 },options:{...OPTS,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+' cases'}}},
   scales:{x:{ticks:tickSm,grid:gridY},y:{ticks:{font:{size:9.5}},grid:{display:false}}}}});
 
-// BPS chart
 const bpsVals = [2.44,4.74,5.33];
 new Chart(document.getElementById('bpsLine'),{type:'line',data:{labels:months,datasets:[
   {label:'BPS',data:bpsVals,borderColor:'#0c447c',backgroundColor:'rgba(12,68,124,0.08)',
@@ -602,7 +560,6 @@ new Chart(document.getElementById('bpsLine'),{type:'line',data:{labels:months,da
   scales:{x:{ticks:tickSm,grid:{display:false}},
           y:{ticks:{...tickSm,callback:v=>v+' bps'},grid:gridY,min:0}}}});
 
-// AI Analysis via Anthropic API
 (async () => {
   const aiBody = document.getElementById('ai-body');
   try {
