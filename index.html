@@ -123,7 +123,8 @@
       </div>
     </div>
     <div class="ai-body" id="ai-body">
-      <p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Hi team,</p><p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Attached is the March monthly disputes report, showing a win rate of 16.8% with $23,215 recovered and 242 cases currently in progress. The full report is linked below.</p>
+      <p style="margin:0 0 10px;font-size:13px;color:#2a2a28;line-height:1.8">Hi team,
+Attached is the March monthly disputes report; we saw a 16.8% win rate recovering $23,215, with 242 cases currently in progress. The full report is linked below.</p>
     </div>
   </div>
 
@@ -389,7 +390,7 @@
     <div class="metrics4">
       <div class="metric">
         <div class="metric-label">Total tx volume (3 months)</div>
-        <div class="metric-value blue">$246.4M</div>
+        <div class="metric-value blue">$246.5M</div>
         <div class="metric-sub">Tutuka processors only</div>
       </div>
       <div class="metric">
@@ -398,16 +399,16 @@
             <span class="tooltip-box">Basis Points = (total disputed amount ÷ total transaction volume) × 10,000. Measures the share of volume that is disputed. Below 5 bps is healthy; above 8 bps may trigger processor review.</span>
           </span>
         </div>
-        <div class="metric-value green">1.18 bps</div>
+        <div class="metric-value amber">4.30 bps</div>
         <div class="metric-sub">3-month average</div>
       </div>
       <div class="metric">
         <div class="metric-label">BPS — Jan</div>
-        <div class="metric-value green">2.32 bps</div>
+        <div class="metric-value green">2.44 bps</div>
       </div>
       <div class="metric highlight">
         <div class="metric-label">BPS — March (highlight)</div>
-        <div class="metric-value green">0.13 bps</div>
+        <div class="metric-value amber">5.34 bps</div>
       </div>
     </div>
     <div class="card" style="margin-bottom:14px">
@@ -592,7 +593,7 @@ new Chart(document.getElementById('bar5'),{type:'bar',data:{
   scales:{x:{ticks:tickSm,grid:gridY},y:{ticks:{font:{size:9.5}},grid:{display:false}}}}});
 
 // BPS chart
-const bpsVals = [2.32,1.44,0.13];
+const bpsVals = [2.44,4.74,5.34];
 new Chart(document.getElementById('bpsLine'),{type:'line',data:{labels:months,datasets:[
   {label:'BPS',data:bpsVals,borderColor:'#0c447c',backgroundColor:'rgba(12,68,124,0.08)',
    pointBackgroundColor:bpsVals.map(v=>v==null?'#0c447c':v>=7?'#791f1f':v<=4?'#0f6e56':'#EF9F27'),
@@ -615,7 +616,7 @@ Key metrics:
 - Credits issued: 299 / $95,930 | Recovery rate: 14.9%
 - Financial loss confirmed: 28 cases / $4,527
 - In progress (pending): 242 cases
-- Chargeback BPS: 1.18 (Jan: 2.32 bps, Feb: 1.44 bps, March: 0.13 bps)
+- Chargeback BPS: 4.30 (Jan: 2.44 bps, Feb: 4.74 bps, March: 5.34 bps)
 - Top dispute reason: transaction_not_recognised (74.0%)
 - Top MCC: 5399
 - Highlight month: March 2026
