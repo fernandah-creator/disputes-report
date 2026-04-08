@@ -6,88 +6,134 @@
 <title>Disputes Report — March 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
+  /* ── Reset ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a18; font-size: 14px; line-height: 1.6; }
-  .page { max-width: 1120px; margin: 0 auto; padding: 40px 32px; }
-  .header { margin-bottom: 36px; border-bottom: 1px solid #e0dfd8; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .header-left h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
-  .header-left p { font-size: 13px; color: #888780; }
-  .header-right { font-size: 12px; color: #b4b2a9; text-align: right; }
-  .highlight-badge { display: inline-block; background: #0c447c; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
-  .section { margin-bottom: 40px; }
-  .section-label { font-size: 10px; color: #888780; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 0.5px solid #e0dfd8; }
-  .metrics4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
-  .metrics3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
-  .metric { background: #f1efe8; border-radius: 10px; padding: 15px 17px; }
-  .metric.highlight { background: #e6f1fb; border: 1px solid #b5d4f4; }
-  .metric-label { font-size: 11px; color: #888780; margin-bottom: 5px; font-weight: 500; }
-  .metric-value { font-size: 23px; font-weight: 600; line-height: 1.1; }
-  .metric-usd { font-size: 12px; font-weight: 600; margin-top: 3px; }
-  .metric-sub { font-size: 11px; color: #888780; margin-top: 3px; line-height: 1.4; }
-  .green { color: #0f6e56; } .red { color: #791f1f; } .blue { color: #0c447c; }
-  .amber { color: #633806; } .gray { color: #5f5e5a; }
-  .charts2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; margin-bottom: 14px; }
-  .charts2eq { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-  .charts3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; }
-  .card { background: #fff; border: 1px solid #e0dfd8; border-radius: 12px; padding: 16px 18px; }
-  .card-title { font-size: 12px; font-weight: 600; color: #1a1a18; margin-bottom: 12px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
-  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #888780; }
-  .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-  table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  thead th { font-size: 10px; color: #888780; font-weight: 600; text-align: right; padding: 6px 5px; border-bottom: 1px solid #e0dfd8; white-space: nowrap; background: #faf9f7; }
+
+  /* ── Tokens ── */
+  :root {
+    --ink:       #1a1a18;
+    --ink-mid:   #5f5e5a;
+    --ink-light: #888780;
+    --ink-faint: #b4b2a9;
+    --bg:        #f7f6f2;
+    --bg-card:   #ffffff;
+    --bg-muted:  #f2f1ed;
+    --border:    #e4e3db;
+    --border-light: #eeedea;
+    --accent:    #0c447c;
+    --accent-bg: #f0f5fb;
+    --pos:       #1a6b52;
+    --pos-bg:    #f0f8f5;
+    --neg:       #7a2020;
+    --neg-bg:    #fdf2f2;
+    --warn:      #6b4200;
+    --warn-bg:   #fdf7ee;
+  }
+
+  /* ── Base ── */
+  body { font-family: 'Georgia', 'Times New Roman', serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.65; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 48px 36px; }
+
+  /* ── Header ── */
+  .header { margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .header-left h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; font-family: 'Georgia', serif; }
+  .header-left p { font-size: 13px; color: var(--ink-light); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .header-right { font-size: 12px; color: var(--ink-faint); text-align: right; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .highlight-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 11px; font-family: -apple-system, sans-serif; font-weight: 500; padding: 3px 10px; border-radius: 4px; margin-left: 10px; vertical-align: middle; letter-spacing: 0.01em; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 48px; }
+  .section-label { font-size: 10px; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; font-family: -apple-system, sans-serif; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  /* ── Metric grids ── */
+  .metrics4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-bottom: 16px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .metrics3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-bottom: 16px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .metric { background: var(--bg-card); padding: 18px 20px; }
+  .metric.highlight { background: var(--accent-bg); }
+  .metric-label { font-size: 11px; color: var(--ink-light); margin-bottom: 6px; font-weight: 500; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.04em; }
+  .metric-value { font-size: 26px; font-weight: 700; line-height: 1.05; font-family: 'Georgia', serif; letter-spacing: -0.02em; }
+  .metric-usd { font-size: 12px; font-weight: 600; margin-top: 3px; font-family: -apple-system, sans-serif; }
+  .metric-sub { font-size: 11px; color: var(--ink-light); margin-top: 4px; line-height: 1.4; font-family: -apple-system, sans-serif; }
+
+  /* ── Semantic colors — text only ── */
+  .green { color: var(--pos); } .red { color: var(--neg); }
+  .blue  { color: var(--accent); } .amber { color: var(--warn); } .gray { color: var(--ink-mid); }
+
+  /* ── Cards & charts ── */
+  .charts2   { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .charts2eq { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .charts3   { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 14px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── Legend ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink-light); font-family: -apple-system, sans-serif; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; font-size: 11px; font-family: -apple-system, sans-serif; }
+  thead th { font-size: 10px; color: var(--ink-light); font-weight: 600; text-align: right; padding: 8px 6px; border-bottom: 1px solid var(--border); white-space: nowrap; background: var(--bg-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   thead th:first-child { text-align: left; }
-  tbody td { padding: 6px 5px; text-align: right; border-bottom: 0.5px solid #f1efe8; white-space: nowrap; }
-  tbody td:first-child { text-align: left; font-weight: 600; }
+  tbody td { padding: 7px 6px; text-align: right; border-bottom: 0.5px solid var(--border-light); white-space: nowrap; color: var(--ink); }
+  tbody td:first-child { text-align: left; font-weight: 600; color: var(--ink); }
   tbody td.left { text-align: left; font-weight: 400; }
-  tbody tr:hover td { background: #faf9f7; }
-  tbody tr.total-row td { font-weight: 700; background: #f1efe8; border-top: 1px solid #e0dfd8; }
-  .note { font-size: 11px; color: #888780; padding: 11px 15px; background: #f1efe8; border-radius: 8px; border-left: 3px solid #d3d1c7; line-height: 1.7; margin-top: 14px; }
-  .divider { border: none; border-top: 1px solid #e0dfd8; margin: 36px 0; }
-  .footer { text-align: center; font-size: 11px; color: #b4b2a9; margin-top: 40px; padding-top: 20px; border-top: 0.5px solid #e0dfd8; }
-  .month-compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
-  .month-card { background: #fff; border: 1px solid #e0dfd8; border-radius: 10px; padding: 14px 16px; }
-  .month-card.highlight { border: 2px solid #0c447c; background: #f0f6fd; }
-  .month-card-title { font-size: 11px; font-weight: 600; color: #888780; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-  .month-card-title .badge { background: #0c447c; color: #fff; font-size: 9px; padding: 1px 6px; border-radius: 3px; }
-  .month-stat { display: flex; justify-content: space-between; font-size: 11px; padding: 3px 0; border-bottom: 0.5px solid #f1efe8; }
+  tbody tr:hover td { background: var(--bg-muted); }
+  tbody tr.total-row td { font-weight: 700; background: var(--bg-muted); border-top: 1px solid var(--border); border-bottom: none; color: var(--ink); }
+
+  /* ── Note ── */
+  .note { font-size: 11px; color: var(--ink-light); padding: 12px 16px; background: var(--bg-muted); border-radius: 6px; border-left: 2px solid var(--border); line-height: 1.7; margin-top: 14px; font-family: -apple-system, sans-serif; }
+
+  /* ── Divider / footer ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  .footer { text-align: center; font-size: 11px; color: var(--ink-faint); margin-top: 40px; padding-top: 20px; border-top: 0.5px solid var(--border); font-family: -apple-system, sans-serif; }
+
+  /* ── Month comparison cards ── */
+  .month-compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+  .month-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .month-card.highlight { border: 1.5px solid var(--accent); background: var(--accent-bg); }
+  .month-card-title { font-size: 11px; font-weight: 700; color: var(--ink-mid); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+  .month-card-title .badge { background: var(--accent); color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 3px; font-weight: 600; letter-spacing: 0.06em; }
+  .month-stat { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 0.5px solid var(--border-light); font-family: -apple-system, sans-serif; }
   .month-stat:last-child { border-bottom: none; }
-  .month-stat-label { color: #888780; }
-  .month-stat-value { font-weight: 600; }
-  .ai-card { background: #fff; border: 1px solid #e0dfd8; border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; position: relative; overflow: hidden; }
-  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #0c447c, #1D9E75); }
-  .ai-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .ai-card-icon { width: 28px; height: 28px; background: #0c447c; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; flex-shrink: 0; }
-  .ai-card-title { font-size: 13px; font-weight: 600; color: #1a1a18; }
-  .ai-card-subtitle { font-size: 11px; color: #888780; }
-  .ai-body { font-size: 13px; color: #2a2a28; line-height: 1.8; }
+  .month-stat-label { color: var(--ink-light); }
+  .month-stat-value { font-weight: 600; color: var(--ink); }
+
+  /* ── AI card ── */
+  .ai-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; position: relative; overflow: hidden; }
+  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); }
+  .ai-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .ai-card-icon { width: 28px; height: 28px; background: var(--accent); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; flex-shrink: 0; }
+  .ai-card-title { font-size: 13px; font-weight: 600; color: var(--ink); font-family: -apple-system, sans-serif; }
+  .ai-card-subtitle { font-size: 11px; color: var(--ink-light); font-family: -apple-system, sans-serif; }
+  .ai-body { font-size: 13px; color: var(--ink); line-height: 1.8; font-family: -apple-system, sans-serif; }
   .ai-body p { margin-bottom: 10px; }
   .ai-body p:last-child { margin-bottom: 0; }
-  .ai-loading { font-size: 13px; color: #888780; font-style: italic; }
-  .tooltip-wrap { display: inline-block; position: relative; cursor: help; border-bottom: 1px dashed #b4b2a9; }
+  .ai-loading { font-size: 13px; color: var(--ink-light); font-style: italic; font-family: -apple-system, sans-serif; }
+  .tooltip-wrap { display: inline-block; position: relative; cursor: help; border-bottom: 1px dashed var(--ink-faint); }
   .tooltip-wrap .tooltip-box {
-    visibility: hidden; opacity: 0; transition: opacity 0.2s;
+    visibility: hidden; opacity: 0; transition: opacity 0.15s;
     position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
-    background: #1a1a18; color: #fff; font-size: 11px; line-height: 1.5;
-    padding: 8px 12px; border-radius: 6px; white-space: nowrap; max-width: 260px;
-    white-space: normal; width: max-content; max-width: 240px; z-index: 100;
-    pointer-events: none;
+    background: var(--ink); color: #fff; font-size: 11px; line-height: 1.5;
+    padding: 8px 12px; border-radius: 6px; white-space: normal;
+    width: max-content; max-width: 240px; z-index: 100; pointer-events: none;
+    font-family: -apple-system, sans-serif;
   }
   .tooltip-wrap .tooltip-box::after {
     content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-    border: 5px solid transparent; border-top-color: #1a1a18;
+    border: 5px solid transparent; border-top-color: var(--ink);
   }
   .tooltip-wrap:hover .tooltip-box { visibility: visible; opacity: 1; }
   .lifecycle { display: flex; align-items: flex-start; gap: 0; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
   .lifecycle-step { flex: 1; min-width: 120px; position: relative; }
   .lifecycle-step::before {
-    content: ''; position: absolute; top: 18px; left: 50%; width: 100%; height: 2px;
-    background: #e0dfd8; z-index: 0;
+    content: ''; position: absolute; top: 18px; left: 50%; width: 100%; height: 1px;
+    background: var(--border); z-index: 0;
   }
   .lifecycle-step:last-child::before { display: none; }
   .lifecycle-dot { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; position: relative; z-index: 1; }
-  .lifecycle-label { font-size: 10px; font-weight: 600; text-align: center; color: #1a1a18; margin-bottom: 3px; }
-  .lifecycle-sub { font-size: 10px; text-align: center; color: #888780; line-height: 1.4; }
+  .lifecycle-label { font-size: 10px; font-weight: 600; text-align: center; color: var(--ink); margin-bottom: 3px; font-family: -apple-system, sans-serif; }
+  .lifecycle-sub { font-size: 10px; text-align: center; color: var(--ink-light); line-height: 1.4; font-family: -apple-system, sans-serif; }
   .lifecycle-time { font-size: 9px; text-align: center; color: #b4b2a9; margin-top: 3px; font-style: italic; }
   .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .glossary-item { background: #faf9f7; border: 0.5px solid #e0dfd8; border-radius: 8px; padding: 12px 14px; }
@@ -116,9 +162,42 @@
     </div>
     <div class="ai-body" id="ai-body">
       
-    <p style="font-size:14px;color:#1a1a18;font-weight:500;margin:0 0 14px;line-height:1.6">March disputes surged to 207, with $50,951 credits at risk.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"><span style="display:inline-block;background:#f1efe8;color:#5f5e5a;border:1px solid #d3d1c7;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;line-height:1.4">207 disputes opened</span><span style="display:inline-block;background:#fef6e4;color:#633806;border:1px solid #EF9F27;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;line-height:1.4">88.9% in progress — normal, 45-120d window</span><span style="display:inline-block;background:#fef6e4;color:#633806;border:1px solid #EF9F27;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;line-height:1.4">$50,951 credits to be recovered</span></div>
-    <div style="font-size:12px;color:#633806;background:#fef6e4;border-left:3px solid #EF9F27;padding:10px 14px;border-radius:0 6px 6px 0;line-height:1.6">⚑ <strong>Watch:</strong> Monitor 'in progress' disputes in April for win/loss trends given high March volume.</div>
+    <p style="font-size:13px;color:#1a1a18;font-weight:500;margin:0 0 12px;line-height:1.6">Disputes opened surged to 207 in March, a 156% increase from February.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      <div style="flex:1;min-width:160px">
+        <div
+          onclick="const d=document.getElementById('ai-detail-0');const all=document.querySelectorAll('.ai-detail');all.forEach(el=>{if(el.id!=='ai-detail-0')el.style.display='none'});d.style.display=d.style.display==='none'?'block':'none'"
+          style="display:inline-flex;align-items:center;gap:6px;background:#fdf3f3;color:#7a2020;border:1.5px solid #ddc2c2;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;user-select:none;width:100%;box-sizing:border-box;justify-content:space-between">
+          <span>207 disputes opened, up from 81 in Feb</span>
+          <span style="font-size:10px;opacity:0.6">▾</span>
+        </div>
+        <div id="ai-detail-0" class="ai-detail" style="display:none;margin-top:8px;background:#f5e0e0;border-left:3px solid #ddc2c2;border-radius:0 8px 8px 0;padding:12px 14px;font-size:12px;color:#7a2020;line-height:1.7">
+          
+        </div>
+      </div>
+      <div style="flex:1;min-width:160px">
+        <div
+          onclick="const d=document.getElementById('ai-detail-1');const all=document.querySelectorAll('.ai-detail');all.forEach(el=>{if(el.id!=='ai-detail-1')el.style.display='none'});d.style.display=d.style.display==='none'?'block':'none'"
+          style="display:inline-flex;align-items:center;gap:6px;background:#f1efe8;color:#5f5e5a;border:1.5px solid #d3d1c7;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;user-select:none;width:100%;box-sizing:border-box;justify-content:space-between">
+          <span>88.9% in progress – outcome pending</span>
+          <span style="font-size:10px;opacity:0.6">▾</span>
+        </div>
+        <div id="ai-detail-1" class="ai-detail" style="display:none;margin-top:8px;background:#e8e6de;border-left:3px solid #d3d1c7;border-radius:0 8px 8px 0;padding:12px 14px;font-size:12px;color:#5f5e5a;line-height:1.7">
+          
+        </div>
+      </div>
+      <div style="flex:1;min-width:160px">
+        <div
+          onclick="const d=document.getElementById('ai-detail-2');const all=document.querySelectorAll('.ai-detail');all.forEach(el=>{if(el.id!=='ai-detail-2')el.style.display='none'});d.style.display=d.style.display==='none'?'block':'none'"
+          style="display:inline-flex;align-items:center;gap:6px;background:#fdf8f0;color:#6b4200;border:1.5px solid #ddd0b0;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;user-select:none;width:100%;box-sizing:border-box;justify-content:space-between">
+          <span>$50,951 in credits to be recovered</span>
+          <span style="font-size:10px;opacity:0.6">▾</span>
+        </div>
+        <div id="ai-detail-2" class="ai-detail" style="display:none;margin-top:8px;background:#f5ecd8;border-left:3px solid #ddd0b0;border-radius:0 8px 8px 0;padding:12px 14px;font-size:12px;color:#6b4200;line-height:1.7">
+          
+        </div>
+      </div></div>
+    <div style="font-size:12px;color:#633806;background:#fef6e4;border-left:3px solid #EF9F27;padding:10px 14px;border-radius:0 6px 6px 0;line-height:1.6;margin-top:4px">⚑ <strong>Watch:</strong> Monitor the 'in progress' disputes closely over the next two months to understand actual win/loss rates.</div>
   
     </div>
   </div>
@@ -299,11 +378,11 @@
         <div class="metric-value red">2.7% <span style="font-size:13px;font-weight:400">· 5</span></div>
         <div class="metric-usd red">$32</div>
         <div style="margin-top:8px;border-top:0.5px solid #e0dfd8;padding-top:8px;font-size:11px;line-height:1.8;color:#5f5e5a">
-          <div>Not eligible: <strong>0</strong> · $0</div>
+          
           <div>Below $15 / not started: <strong>5</strong> · $32</div>
-          <div>Stopped: <strong>0</strong> · $0</div>
-          <div>Merchant refund: <strong>0</strong> · $0</div>
-          <div>Lost by network: <strong>0</strong> · $0</div>
+          
+          
+          
         </div>
       </div>
     </div>
@@ -571,30 +650,30 @@ const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
 const pct = (a,b) => b>0 ? (a/b*100).toFixed(1)+'%' : '—';
 
 new Chart(document.getElementById('bar1'),{type:'bar',data:{labels:months,datasets:[
-  {label:'Won',data:D.map(d=>d.won),backgroundColor:'#1D9E75',stack:'s'},
-  {label:'Merchant refund',data:D.map(d=>d.ref),backgroundColor:'#378ADD',stack:'s'},
-  {label:'Stopped',data:D.map(d=>d.stop),backgroundColor:'#EF9F27',stack:'s'},
-  {label:'Lost',data:D.map(d=>d.lost),backgroundColor:'#E24B4A',stack:'s'},
-  {label:'In progress',data:D.map(d=>d.prog),backgroundColor:'#9FE1CB',stack:'s'},
+  {label:'Won',data:D.map(d=>d.won),backgroundColor:'#1a6b52',stack:'s'},
+  {label:'Merchant refund',data:D.map(d=>d.ref),backgroundColor:'#6b9dc2',stack:'s'},
+  {label:'Stopped',data:D.map(d=>d.stop),backgroundColor:'#c4912a',stack:'s'},
+  {label:'Lost',data:D.map(d=>d.lost),backgroundColor:'#a33b3b',stack:'s'},
+  {label:'In progress',data:D.map(d=>d.prog),backgroundColor:'#a8d5c4',stack:'s'},
 ]},options:{...OPTS,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
   scales:{x:{stacked:true,ticks:{...tickSm,autoSkip:false},grid:{display:false}},y:{stacked:true,ticks:tickSm,grid:gridY}}}});
 
 new Chart(document.getElementById('line1'),{type:'line',data:{labels:months,datasets:[
-  {label:'Win rate',data:D.map(d=>{const o=d.won+d.prog+d.lost+d.ref+d.stop;return o>0?+(d.won/o*100).toFixed(1):null;}),borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',tension:0.3,pointRadius:4,fill:true},
-  {label:'Merchant refund rate',data:D.map(d=>{const o=d.won+d.prog+d.lost+d.ref+d.stop;return o>0?+(d.ref/o*100).toFixed(1):null;}),borderColor:'#378ADD',tension:0.3,pointRadius:4},
-  {label:'Loss rate',data:D.map(d=>{const o=d.won+d.prog+d.lost+d.ref+d.stop;return o>0?+(d.lost/o*100).toFixed(1):null;}),borderColor:'#E24B4A',tension:0.3,pointRadius:4},
+  {label:'Win rate',data:D.map(d=>{const o=d.won+d.prog+d.lost+d.ref+d.stop;return o>0?+(d.won/o*100).toFixed(1):null;}),borderColor:'#1a6b52',backgroundColor:'rgba(26,107,82,0.07)',tension:0.3,pointRadius:4,fill:true},
+  {label:'Merchant refund rate',data:D.map(d=>{const o=d.won+d.prog+d.lost+d.ref+d.stop;return o>0?+(d.ref/o*100).toFixed(1):null;}),borderColor:'#6b9dc2',tension:0.3,pointRadius:4},
+  {label:'Loss rate',data:D.map(d=>{const o=d.won+d.prog+d.lost+d.ref+d.stop;return o>0?+(d.lost/o*100).toFixed(1):null;}),borderColor:'#a33b3b',tension:0.3,pointRadius:4},
 ]},options:{...OPTS,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10,boxHeight:2}}},
   scales:{x:{ticks:{...tickSm,autoSkip:false},grid:{display:false}},y:{ticks:{...tickSm,callback:v=>v+'%'},grid:gridY,min:0,max:100}}}});
 
 new Chart(document.getElementById('bar2'),{type:'bar',data:{labels:months,datasets:[
-  {label:'Recovered',data:D.map(d=>d.wonCusd),backgroundColor:'#1D9E75',stack:'s'},
-  {label:'Temp. to be recovered',data:D.map(d=>d.progCusd),backgroundColor:'#9FE1CB',stack:'s'},
-  {label:'Financial loss',data:D.map(d=>d.finLusd),backgroundColor:'#E24B4A',stack:'s'},
+  {label:'Recovered',data:D.map(d=>d.wonCusd),backgroundColor:'#1a6b52',stack:'s'},
+  {label:'Temp. to be recovered',data:D.map(d=>d.progCusd),backgroundColor:'#a8d5c4',stack:'s'},
+  {label:'Financial loss',data:D.map(d=>d.finLusd),backgroundColor:'#a33b3b',stack:'s'},
 ]},options:{...OPTS,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:ctx=>' '+ctx.dataset.label+': '+fmt(ctx.raw)}}},
   scales:{x:{stacked:true,ticks:{...tickSm,autoSkip:false},grid:{display:false}},y:{stacked:true,ticks:{...tickSm,callback:v=>'$'+Math.round(v/1000)+'k'},grid:gridY}}}});
 
 new Chart(document.getElementById('line2'),{type:'line',data:{labels:months,datasets:[
-  {label:'Loss rate %',data:D.map(d=>d.cred>0?+(d.finL/d.cred*100).toFixed(1):null),borderColor:'#E24B4A',backgroundColor:'rgba(226,75,74,0.08)',tension:0.3,pointRadius:4,fill:true},
+  {label:'Loss rate %',data:D.map(d=>d.cred>0?+(d.finL/d.cred*100).toFixed(1):null),borderColor:'#a33b3b',backgroundColor:'rgba(163,59,59,0.07)',tension:0.3,pointRadius:4,fill:true},
 ]},options:{...OPTS,plugins:{legend:{display:false}},
   scales:{x:{ticks:{...tickSm,autoSkip:false},grid:{display:false}},y:{ticks:{...tickSm,callback:v=>v+'%'},grid:gridY,min:0}}}});
 
@@ -681,7 +760,7 @@ new Chart(document.getElementById('bar_reason_compare'),{type:'bar',data:{
 
 const bpsVals = [2.29,1.42,0.13];
 new Chart(document.getElementById('bpsLine'),{type:'line',data:{labels:months,datasets:[
-  {label:'BPS',data:bpsVals,borderColor:'#0c447c',backgroundColor:'rgba(12,68,124,0.08)',
+  {label:'BPS',data:bpsVals,borderColor:'#0c447c',backgroundColor:'rgba(12,68,124,0.07)',
    pointBackgroundColor:bpsVals.map(v=>v==null?'#0c447c':v>=7?'#791f1f':v<=4?'#0f6e56':'#EF9F27'),
    pointRadius:7,tension:0.3,fill:true}
 ]},options:{...OPTS,plugins:{legend:{display:false},
