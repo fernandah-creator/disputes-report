@@ -88,19 +88,21 @@
   .footer { text-align: center; font-size: 11px; color: var(--ink-faint); margin-top: 40px; padding-top: 20px; border-top: 0.5px solid var(--border); font-family: -apple-system, sans-serif; }
 
   /* ── Mobile responsive ── */
-  @media (max-width: 700px) {
+  @media (max-width: 768px) {
     .page { padding: 20px 16px; }
     .header { flex-direction: column; align-items: flex-start; gap: 8px; }
     .header-right { text-align: left; }
-    .metrics4 { grid-template-columns: repeat(2, 1fr); }
-    .metrics3 { grid-template-columns: repeat(1, 1fr); }
+    .metrics4 { grid-template-columns: repeat(2, 1fr); gap: 1px; }
+    .metrics3 { grid-template-columns: repeat(1, 1fr); gap: 1px; }
     .charts2, .charts2eq, .charts3 { grid-template-columns: 1fr; }
     .month-compare { grid-template-columns: 1fr; }
     .metric-value { font-size: 20px; }
     .highlight-badge { display: block; margin: 6px 0 0 0; }
+    .card { padding: 14px; }
   }
-  @media (max-width: 400px) {
+  @media (max-width: 480px) {
     .metrics4 { grid-template-columns: 1fr; }
+    .metric { padding: 14px 16px; }
   }
 
   /* ── Month comparison cards ── */
@@ -113,6 +115,11 @@
   .month-stat:last-child { border-bottom: none; }
   .month-stat-label { color: var(--ink-light); }
   .month-stat-value { font-weight: 600; color: var(--ink); }
+  .month-stat-value.green { color: var(--pos); }
+  .month-stat-value.blue  { color: var(--accent-mid); }
+  .month-stat-value.amber { color: var(--warn); }
+  .month-stat-value.red   { color: var(--neg); }
+  .month-stat-value.gray  { color: var(--ink-mid); }
 
   /* ── AI card ── */
   .ai-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; position: relative; overflow: hidden; }
@@ -177,7 +184,7 @@
     </div>
     <div class="ai-body" id="ai-body">
       
-    <p style="font-size:13px;color:#1a1a18;line-height:1.75;margin:0 0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">207 disputes opened in March, a significant increase from February's 81.</p>
+    <p style="font-size:13px;color:#1a1a18;line-height:1.75;margin:0 0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Disputes opened surged to 207 in March, up from 81 in February.</p>
     <div style="margin-bottom:16px">
       <div style="margin-bottom:8px">
         <button
@@ -188,12 +195,12 @@
             btn.style.borderBottomLeftRadius=open?'6px':'0';
             btn.style.borderBottomRightRadius=open?'6px':'0';
           })(this)"
-          style="display:inline-flex;align-items:center;gap:8px;background:#faf5ec;color:#5c3d00;border:1px solid #d9c99a;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:500;line-height:1.3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;cursor:pointer;text-align:left;width:auto">
+          style="display:inline-flex;align-items:center;gap:8px;background:#f8f0f0;color:#5c1f1f;border:1px solid #d9b0b0;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:500;line-height:1.3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;cursor:pointer;text-align:left;width:auto">
           207 disputes opened
           <span style="font-size:10px;opacity:0.6">▾ click for analysis</span>
         </button>
-        <div id="ai-detail-0" style="display:none;background:#fdf9f2;border:1px solid #d9c99a;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#5c3d00;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
-          March saw a significant increase in disputes opened, rising to 207 from 81 in February and 93 in January. This represents 40% of all tickets, a higher proportion than previous months. The top dispute reason remains 'transaction not recognised' accounting for 373 cases.
+        <div id="ai-detail-0" style="display:none;background:#fdf5f5;border:1px solid #d9b0b0;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#5c1f1f;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
+          March saw a sharp increase in disputes opened, reaching 207 compared to 81 in February and 93 in January. This represents 40% of all tickets, a notable rise from February's 35.4%. The primary reason cited remains 'transaction not recognised', accounting for 72% of cases.
         </div>
       </div>
       <div style="margin-bottom:8px">
@@ -205,12 +212,12 @@
             btn.style.borderBottomLeftRadius=open?'6px':'0';
             btn.style.borderBottomRightRadius=open?'6px':'0';
           })(this)"
-          style="display:inline-flex;align-items:center;gap:8px;background:#f2f1ed;color:#4a4a47;border:1px solid #d8d6cf;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:500;line-height:1.3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;cursor:pointer;text-align:left;width:auto">
+          style="display:inline-flex;align-items:center;gap:8px;background:#faf5ec;color:#5c3d00;border:1px solid #d9c99a;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:500;line-height:1.3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;cursor:pointer;text-align:left;width:auto">
           88.9% in progress
           <span style="font-size:10px;opacity:0.6">▾ click for analysis</span>
         </button>
-        <div id="ai-detail-1" style="display:none;background:#f7f6f3;border:1px solid #d8d6cf;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#4a4a47;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
-          The high percentage of disputes in progress (88.9%) is typical for the current month. These are at stages like Evidence Submitted or 2nd Presentment. Resolution by the card network takes 45-120 days, so outcomes are expected in the coming months.
+        <div id="ai-detail-1" style="display:none;background:#fdf9f2;border:1px solid #d9c99a;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#5c3d00;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
+          A high percentage (88.9%) of disputes are currently in progress, representing 184 cases. This is expected for the current month as the card network resolution process typically takes 45-120 days. The outcomes of these in-progress disputes will determine our final win/loss ratio for March.
         </div>
       </div>
       <div style="margin-bottom:8px">
@@ -227,12 +234,12 @@
           <span style="font-size:10px;opacity:0.6">▾ click for analysis</span>
         </button>
         <div id="ai-detail-2" style="display:none;background:#fdf9f2;border:1px solid #d9c99a;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#5c3d00;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
-          Credits issued on in-progress disputes total $50,951 and are currently 'to be recovered'. These are provisional credits given to clients while disputes are investigated. The outcome is pending, so this amount is still at risk.
+          The total value of credits issued in March is $50,983, with $50,951 still needing to be recovered as these cases are in progress. This amount is at risk until the card network makes a final determination on each dispute. Recoveries will come from chargeback wins or merchant refunds.
         </div>
       </div></div>
     
     <div style="font-size:12px;color:#5c3d00;background:#faf5ec;border-left:2px solid #c4a35a;padding:10px 14px;border-radius:0 6px 6px 0;line-height:1.6;font-family:-apple-system,sans-serif">
-      <strong>Watch:</strong> Monitor the win rate for in-progress disputes in April to determine if the increase in disputes opened in March will affect the win rate.
+      <strong>Watch:</strong> Monitor the resolution of the 184 in-progress disputes to project potential losses or recoveries.
     </div>
   
     </div>
