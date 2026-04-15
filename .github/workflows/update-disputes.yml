@@ -20,10 +20,14 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Fetch and process disputes
+      - name: Fetch disputes and tracker
         env:
           METABASE_URL: ${{ secrets.METABASE_URL }}
           METABASE_API_KEY: ${{ secrets.METABASE_API_KEY }}
+          SHEETS_ID: ${{ secrets.SHEETS_ID }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
         run: python3 scripts/fetch_disputes.py
 
       - name: Commit and push
