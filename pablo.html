@@ -3,296 +3,504 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Disputes by Organisation · Jeeves</title>
+<title>Dispute Patterns · Pablo · Jeeves</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-         background: #f5f4f0; color: #1a1a18; font-size: 14px; line-height: 1.6; }
-  .page { max-width: 1200px; margin: 0 auto; padding: 32px 28px; }
-  .header { display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid #e0dfd8; }
-  .header h1 { font-size: 20px; font-weight: 600; }
-  .header p  { font-size: 12px; color: #888780; margin-top: 2px; }
-  .header-meta { font-size: 11px; color: #b4b2a9; text-align: right; }
-  .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-  .search-wrap { position: relative; flex: 1; min-width: 220px; }
-  .search-wrap input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid #e0dfd8;
-                        border-radius: 8px; background: #fff; font-size: 13px; color: #1a1a18; outline: none; }
-  .search-wrap input:focus { border-color: #b4b2a9; }
-  .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-                 color: #b4b2a9; font-size: 14px; pointer-events: none; }
-  select { padding: 8px 10px; border: 1px solid #e0dfd8; border-radius: 8px;
-           background: #fff; font-size: 13px; color: #1a1a18; outline: none; cursor: pointer; }
-  .pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-  .pill-spike { background: #faeeda; color: #633806; }
-  .pill-gray  { background: #f1efe8; color: #5f5e5a; }
-  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-  .scard { background: #f1efe8; border-radius: 10px; padding: 13px 15px; }
-  .scard-label { font-size: 10px; color: #888780; font-weight: 600; text-transform: uppercase;
-                 letter-spacing: .06em; margin-bottom: 4px; }
-  .scard-value { font-size: 22px; font-weight: 600; line-height: 1; }
-  .table-wrap { background: #fff; border: 1px solid #e0dfd8; border-radius: 12px; overflow: hidden; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead th { padding: 10px 12px; text-align: left; font-size: 10px; font-weight: 600;
-             color: #888780; text-transform: uppercase; letter-spacing: .06em;
-             background: #faf9f7; border-bottom: 1px solid #e0dfd8; white-space: nowrap; cursor: pointer; }
-  thead th:hover { color: #1a1a18; }
-  thead th.sorted::after { content: ' ↓'; }
-  thead th.sorted.asc::after { content: ' ↑'; }
-  tbody tr { border-bottom: 0.5px solid #f1efe8; cursor: pointer; transition: background .1s; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover, tbody tr.expanded { background: #faf9f7; }
-  tbody td { padding: 10px 12px; vertical-align: middle; }
-  .org-name { font-weight: 600; font-size: 13px; }
-  .org-id   { font-size: 10px; color: #b4b2a9; margin-top: 1px; }
-  .num { text-align: right; font-variant-numeric: tabular-nums; }
-  .trend-bar { display: flex; align-items: flex-end; gap: 2px; height: 24px; }
-  .trend-bar span { background: #b5d4f4; border-radius: 2px; min-width: 6px; flex: 1; }
-  .trend-bar span.last  { background: #0c447c; }
-  .trend-bar span.spike { background: #e24b4a; }
-  .expand-row td { padding: 0; background: #f5f4f0; border-bottom: 1px solid #e0dfd8; }
-  .expand-inner { padding: 16px 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .detail-block h4 { font-size: 10px; font-weight: 600; color: #888780; text-transform: uppercase;
-                     letter-spacing: .06em; margin-bottom: 8px; }
-  .detail-row { display: flex; justify-content: space-between; align-items: center;
-                font-size: 11px; padding: 3px 0; border-bottom: 0.5px solid #e0dfd8; }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-label { color: #5f5e5a; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .detail-val { font-weight: 600; }
-  .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-  .status-item { font-size: 11px; display: flex; justify-content: space-between; }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 4px; }
-  .mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin-top: 6px; }
-  .mini-bar { border-radius: 2px 2px 0 0; min-width: 10px; flex: 1; position: relative; }
-  .mini-bar span { position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-                   font-size: 9px; color: #888780; white-space: nowrap; }
-  .spike-banner { background: #faeeda; border: 1px solid #EF9F27; border-radius: 10px;
-                  padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #633806;
-                  display: none; gap: 8px; align-items: flex-start; }
-  .spike-banner.visible { display: flex; }
-  .spike-banner b { display: block; font-size: 13px; margin-bottom: 2px; }
-  .state { text-align: center; padding: 60px 20px; color: #888780; font-size: 13px; }
-  .state strong { display: block; font-size: 18px; font-weight: 600; color: #1a1a18; margin-bottom: 8px; }
-  .spinner { display: inline-block; width: 24px; height: 24px; border: 2px solid #e0dfd8;
-             border-top-color: #888780; border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 12px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #F7F5F0;
+  --surface:  #FFFFFF;
+  --border:   #E8E4DC;
+  --border2:  #D4CEC2;
+  --text:     #1A1916;
+  --muted:    #7A7568;
+  --subtle:   #B8B2A8;
+  --accent:   #1A1916;
+  --green:    #1A6B4A;
+  --green-bg: #EBF5F0;
+  --amber:    #8A5C00;
+  --amber-bg: #FFF7E6;
+  --red:      #8A2020;
+  --red-bg:   #FFF0F0;
+  --blue:     #1A4A8A;
+  --blue-bg:  #EEF3FC;
+  --purple:   #4A1A8A;
+  --purple-bg:#F3EEFF;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.shell { max-width: 1340px; margin: 0 auto; padding: 0 28px 60px; }
+
+/* ── Header ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 0 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.topbar-left { display: flex; align-items: baseline; gap: 16px; }
+.logo { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+        color: var(--muted); font-family: 'DM Mono', monospace; }
+.page-title { font-size: 18px; font-weight: 600; color: var(--text); }
+.meta-tag { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--subtle);
+            background: var(--border); padding: 3px 8px; border-radius: 4px; }
+.last-updated { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--subtle); }
+
+/* ── KPI cards row ── */
+.kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+.kpi {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px;
+}
+.kpi-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+             color: var(--muted); margin-bottom: 8px; }
+.kpi-value { font-size: 26px; font-weight: 600; line-height: 1; font-family: 'DM Mono', monospace; }
+.kpi-sub   { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.kpi-value.green  { color: var(--green); }
+.kpi-value.amber  { color: var(--amber); }
+.kpi-value.red    { color: var(--red); }
+
+/* ── Controls ── */
+.controls {
+  display: flex; gap: 10px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;
+}
+.search-box {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 8px 12px; flex: 1; min-width: 240px;
+}
+.search-box input {
+  border: none; outline: none; background: transparent;
+  font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; width: 100%;
+}
+.search-box input::placeholder { color: var(--subtle); }
+.search-icon { color: var(--subtle); font-size: 14px; flex-shrink: 0; }
+.ctrl-select {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 8px 10px;
+  font-size: 12px; color: var(--text); font-family: 'DM Sans', sans-serif;
+  outline: none; cursor: pointer;
+}
+.result-count { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace;
+                margin-left: auto; }
+
+/* ── Cards grid ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+
+/* ── Org card ── */
+.org-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s, box-shadow .15s;
+  cursor: pointer;
+}
+.org-card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.org-card.expanded { border-color: var(--accent); }
+
+/* Card header */
+.card-head {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+}
+.card-head-left { flex: 1; min-width: 0; }
+.card-org-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.card-org-id { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--subtle); }
+.card-badges { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+
+/* Card metrics row */
+.card-metrics {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  gap: 1px;
+}
+.metric { text-align: center; }
+.metric-val {
+  font-size: 18px; font-weight: 600; line-height: 1.1;
+  font-family: 'DM Mono', monospace;
+}
+.metric-val.good  { color: var(--green); }
+.metric-val.warn  { color: var(--amber); }
+.metric-val.bad   { color: var(--red); }
+.metric-val.na    { color: var(--subtle); }
+.metric-label { font-size: 10px; color: var(--muted); margin-top: 3px;
+                text-transform: uppercase; letter-spacing: .06em; }
+
+/* Card status bar */
+.status-row {
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+}
+.status-chip {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10px; padding: 2px 7px; border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Card trend */
+.card-trend {
+  padding: 10px 18px 14px;
+  display: flex; align-items: flex-end; gap: 3px; height: 52px;
+}
+.trend-col { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1; }
+.trend-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; }
+.trend-bar-inner {
+  width: 100%; border-radius: 2px 2px 0 0; min-height: 2px;
+  background: #D4CEC2; transition: background .2s;
+}
+.trend-bar-inner.current { background: var(--text); }
+.trend-bar-inner.spike   { background: var(--red); }
+.trend-month { font-size: 8px; color: var(--subtle); font-family: 'DM Mono', monospace; }
+
+/* Expand panel */
+.card-expand {
+  display: none; border-top: 1px solid var(--border);
+  padding: 16px 18px;
+  background: #FAFAF8;
+}
+.card-expand.open { display: block; }
+.expand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.expand-block h5 {
+  font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.expand-row {
+  display: flex; justify-content: space-between;
+  font-size: 11px; padding: 4px 0;
+  border-bottom: .5px solid var(--border);
+}
+.expand-row:last-child { border-bottom: none; }
+.expand-row-label { color: var(--muted); overflow: hidden; text-overflow: ellipsis;
+                    white-space: nowrap; max-width: 180px; }
+.expand-row-val { font-weight: 600; font-family: 'DM Mono', monospace; flex-shrink: 0; }
+
+/* ── Badges ── */
+.badge {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+  white-space: nowrap;
+}
+.badge-pending  { background: #F0EDE8; color: var(--muted); }
+.badge-active   { background: var(--blue-bg); color: var(--blue); }
+.badge-warn     { background: var(--amber-bg); color: var(--amber); }
+.badge-ok       { background: var(--green-bg); color: var(--green); }
+.badge-neutral  { background: var(--border); color: var(--muted); }
+
+/* ── Empty / loading ── */
+.state-msg { text-align: center; padding: 80px 20px; color: var(--muted); }
+.state-msg strong { display: block; font-size: 16px; color: var(--text); margin-bottom: 6px; }
+.spinner {
+  width: 22px; height: 22px; border: 2px solid var(--border);
+  border-top-color: var(--muted); border-radius: 50%;
+  animation: spin .7s linear infinite; margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .cards-grid { grid-template-columns: 1fr; }
+  .expand-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="header">
-    <div>
-      <h1>Disputes by Organisation</h1>
-      <p>All-time · Metabase Q16937 · Disputes Operations</p>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="logo">Jeeves</span>
+      <span class="page-title">Dispute Patterns</span>
+      <span class="meta-tag">Q16937 + Tracker</span>
     </div>
-    <div class="header-meta" id="meta">Loading…</div>
+    <span class="last-updated" id="last-updated">—</span>
   </div>
-  <div class="spike-banner" id="spike-banner">
-    <span style="font-size:16px">⚠</span>
-    <div id="spike-text"></div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-label">Total Orgs</div>
+      <div class="kpi-value" id="k-orgs">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Cases</div>
+      <div class="kpi-value" id="k-cases">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Amount</div>
+      <div class="kpi-value" id="k-usd">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Won (closed)</div>
+      <div class="kpi-value green" id="k-won">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Needs Response</div>
+      <div class="kpi-value amber" id="k-nr">—</div>
+    </div>
   </div>
-  <div class="summary">
-    <div class="scard"><div class="scard-label">Organisations</div><div class="scard-value" id="s-orgs">—</div></div>
-    <div class="scard"><div class="scard-label">Total cases</div><div class="scard-value" id="s-cases">—</div></div>
-    <div class="scard"><div class="scard-label">Total amount</div><div class="scard-value" id="s-usd">—</div></div>
-    <div class="scard"><div class="scard-label">Orgs with spike</div><div class="scard-value" id="s-spikes" style="color:#791f1f">—</div></div>
-  </div>
+
   <div class="controls">
-    <div class="search-wrap">
+    <div class="search-box">
       <span class="search-icon">⌕</span>
-      <input type="text" id="search" placeholder="Search by org name or ID…" oninput="render()">
+      <input type="text" id="search" placeholder="Search org name or ID…" oninput="render()">
     </div>
-    <select id="sort" onchange="render()">
-      <option value="total_cases">Sort: most cases</option>
-      <option value="total_usd">Sort: highest USD</option>
-      <option value="spike">Sort: spike first</option>
-      <option value="loss_rate">Sort: highest loss rate</option>
-      <option value="customer">Sort: name A→Z</option>
+    <select class="ctrl-select" id="sort" onchange="render()">
+      <option value="total_cases">Most cases</option>
+      <option value="total_usd">Highest amount</option>
+      <option value="win_rate">Win rate ↑</option>
+      <option value="needs_response">Needs response</option>
+      <option value="customer">Name A→Z</option>
     </select>
-    <select id="filter-status" onchange="render()">
+    <select class="ctrl-select" id="flt" onchange="render()">
       <option value="">All orgs</option>
-      <option value="spike">Spike only ⚠</option>
-      <option value="loss">Loss rate &gt; 5%</option>
+      <option value="active">Active disputes</option>
+      <option value="needs_response">Needs response</option>
+      <option value="won">Won cases</option>
     </select>
+    <span class="result-count" id="result-count"></span>
   </div>
-  <div class="table-wrap">
-    <div id="state" class="state"><div class="spinner"></div><br>Loading disputes data…</div>
-    <table id="tbl" style="display:none">
-      <thead>
-        <tr>
-          <th onclick="sortBy('customer')">Organisation</th>
-          <th onclick="sortBy('total_cases')" class="num sorted" id="th-total_cases">Cases</th>
-          <th onclick="sortBy('total_usd')" class="num" id="th-total_usd">Amount (USD)</th>
-          <th onclick="sortBy('win_rate')" class="num" id="th-win_rate">Win rate</th>
-          <th onclick="sortBy('loss_rate')" class="num" id="th-loss_rate">Loss rate</th>
-          <th class="num">Top reason</th>
-          <th class="num">6-mo trend</th>
-          <th class="num">Spike?</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
+
+  <div id="state-msg" class="state-msg">
+    <div class="spinner"></div>
+    Loading dispute data…
   </div>
+  <div class="cards-grid" id="grid"></div>
+
 </div>
 <script>
 const DATA_URL = 'https://fernandah-creator.github.io/disputes-report/disputes.json';
-let allOrgs = [], meta = {}, expandedId = null, sortKey = 'total_cases', sortAsc = false;
+let allOrgs = [], expandedId = null;
 
-const fmt   = n  => '$' + Math.round(n).toLocaleString('en-US');
-const pct   = v  => v == null ? '—' : v.toFixed(1) + '%';
-const trunc = (s, n=28) => s && s.length > n ? s.slice(0,n)+'…' : (s||'—');
+const fmtUSD = n => '$' + Math.round(n).toLocaleString('en-US');
+const fmtPct = v => v == null ? '—' : v.toFixed(1) + '%';
+const trunc  = (s,n=32) => s&&s.length>n ? s.slice(0,n)+'…' : (s||'—');
+const esc    = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const STATUS_COLORS = {
+  won:              ['#1A6B4A','#EBF5F0'],
+  in_progress:      ['#1A4A8A','#EEF3FC'],
+  needs_response:   ['#8A5C00','#FFF7E6'],
+  refunded:         ['#4A1A8A','#F3EEFF'],
+  not_eligible:     ['#7A7568','#F0EDE8'],
+  closed_no_response:['#7A7568','#F0EDE8'],
+  closed_low_amount: ['#7A7568','#F0EDE8'],
+  closed_decided:   ['#7A7568','#F0EDE8'],
+  client_recognized:['#7A7568','#F0EDE8'],
+  trx_failed:       ['#8A2020','#FFF0F0'],
+  lost:             ['#8A2020','#FFF0F0'],
+  on_hold:          ['#8A5C00','#FFF7E6'],
+  pending:          ['#B8B2A8','#F7F5F0'],
+  other:            ['#B8B2A8','#F7F5F0'],
+};
+const STATUS_LABEL = {
+  won:'Won', in_progress:'In Progress', needs_response:'Needs Response',
+  refunded:'Refunded', not_eligible:'Not Eligible', closed_no_response:'No Response',
+  closed_low_amount:'<15 USD', closed_decided:'Closed', client_recognized:'Recognized',
+  trx_failed:'Trx Failed', lost:'Lost', on_hold:'On Hold', pending:'Pending', other:'Other'
+};
 
 async function load() {
   try {
     const r = await fetch(DATA_URL + '?t=' + Date.now());
-    if (!r.ok) throw new Error(r.status);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    meta = d; allOrgs = d.orgs || [];
-    document.getElementById('s-orgs').textContent  = allOrgs.length.toLocaleString();
-    document.getElementById('s-cases').textContent = (d.total_cases||0).toLocaleString();
-    document.getElementById('s-usd').textContent   = fmt(allOrgs.reduce((a,o)=>a+o.total_usd,0));
-    document.getElementById('s-spikes').textContent = allOrgs.filter(o=>o.spike?.detected).length;
-    document.getElementById('meta').innerHTML =
-      `Generated ${new Date(d.generated_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}<br>
-       Range: ${d.months_range?.from||'—'} → ${d.months_range?.to||'—'}`;
-    showSpikeBanner();
+    allOrgs = d.orgs || [];
+
+    // KPIs
+    const totalUSD  = allOrgs.reduce((a,o)=>a+o.total_usd,0);
+    const totalWon  = allOrgs.reduce((a,o)=>a+(o.statuses?.won||0),0);
+    const totalNR   = allOrgs.reduce((a,o)=>a+(o.statuses?.needs_response||0),0);
+    document.getElementById('k-orgs').textContent  = allOrgs.length.toLocaleString();
+    document.getElementById('k-cases').textContent = (d.total_cases||0).toLocaleString();
+    document.getElementById('k-usd').textContent   = fmtUSD(totalUSD);
+    document.getElementById('k-won').textContent   = totalWon.toLocaleString();
+    document.getElementById('k-nr').textContent    = totalNR.toLocaleString();
+    document.getElementById('last-updated').textContent =
+      'Updated ' + new Date(d.generated_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})
+      + ' · ' + (d.months_range?.from||'?') + ' → ' + (d.months_range?.to||'?');
+
     render();
   } catch(e) {
-    document.getElementById('state').innerHTML =
-      `<strong>Could not load data</strong>Run the export first, then refresh.<br><small style="color:#b4b2a9">${e.message}</small>`;
+    document.getElementById('state-msg').innerHTML =
+      '<strong>Could not load data</strong>Run the export workflow first, then refresh.<br><small>'+e.message+'</small>';
   }
-}
-
-function showSpikeBanner() {
-  const spikes = allOrgs.filter(o=>o.spike?.detected)
-    .sort((a,b)=>b.spike.recent_cases-a.spike.recent_cases).slice(0,3);
-  if (!spikes.length) return;
-  document.getElementById('spike-banner').classList.add('visible');
-  document.getElementById('spike-text').innerHTML =
-    `<b>${spikes.length} org${spikes.length>1?'s':''} with sudden dispute spikes</b>` +
-    spikes.map(o=>`${o.customer}: ${o.spike.prev_cases} → ${o.spike.recent_cases} cases (${o.spike.ratio}×)`).join(' · ');
-}
-
-function sortBy(key) {
-  if (sortKey===key) { sortAsc=!sortAsc; } else { sortKey=key; sortAsc=key==='customer'; }
-  document.querySelectorAll('thead th').forEach(th=>{
-    th.classList.remove('sorted','asc');
-    if (th.id==='th-'+sortKey) { th.classList.add('sorted'); if(sortAsc) th.classList.add('asc'); }
-  });
-  render();
 }
 
 function render() {
-  const q      = document.getElementById('search').value.toLowerCase();
-  const filter = document.getElementById('filter-status').value;
+  const q   = document.getElementById('search').value.toLowerCase();
+  const srt = document.getElementById('sort').value;
+  const flt = document.getElementById('flt').value;
+
   let orgs = [...allOrgs];
   if (q) orgs = orgs.filter(o=>o.customer.toLowerCase().includes(q)||o.org_id.toLowerCase().includes(q));
-  if (filter==='spike') orgs = orgs.filter(o=>o.spike?.detected);
-  if (filter==='loss')  orgs = orgs.filter(o=>o.loss_rate>5);
+  if (flt==='active')         orgs = orgs.filter(o=>(o.statuses?.in_progress||0)+(o.statuses?.needs_response||0)>0);
+  if (flt==='needs_response') orgs = orgs.filter(o=>(o.statuses?.needs_response||0)>0);
+  if (flt==='won')            orgs = orgs.filter(o=>(o.statuses?.won||0)>0);
+
   orgs.sort((a,b)=>{
-    let va=a[sortKey], vb=b[sortKey];
-    if (sortKey==='spike') { va=a.spike?.detected?1:0; vb=b.spike?.detected?1:0; }
-    if (sortKey==='customer') { va=a.customer; vb=b.customer; }
-    if (typeof va==='string') return sortAsc?va.localeCompare(vb):vb.localeCompare(va);
-    va=va??-1; vb=vb??-1;
-    return sortAsc?va-vb:vb-va;
+    if (srt==='customer')       return a.customer.localeCompare(b.customer);
+    if (srt==='win_rate')       return (b.win_rate??-1)-(a.win_rate??-1);
+    if (srt==='needs_response') return (b.statuses?.needs_response||0)-(a.statuses?.needs_response||0);
+    if (srt==='total_usd')      return b.total_usd-a.total_usd;
+    return b.total_cases-a.total_cases;
   });
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = '';
+
+  document.getElementById('result-count').textContent = orgs.length + ' orgs';
+  const grid = document.getElementById('grid');
+  const stateMsg = document.getElementById('state-msg');
+
   if (!orgs.length) {
-    document.getElementById('tbl').style.display='none';
-    document.getElementById('state').style.display='';
-    document.getElementById('state').innerHTML='<strong>No results</strong>Try adjusting the search or filter.';
+    stateMsg.innerHTML = '<strong>No results</strong>Try adjusting the search or filter.';
+    stateMsg.style.display = '';
+    grid.innerHTML = '';
     return;
   }
-  document.getElementById('tbl').style.display='';
-  document.getElementById('state').style.display='none';
-  for (const org of orgs) {
-    const tMax = Math.max(...org.trend.map(t=>t.cases),1);
-    const trendBars = org.trend.map((t,i)=>{
-      const h=Math.round(t.cases/tMax*24)||2;
-      const cls=i===org.trend.length-1?(org.spike?.detected?'spike':'last'):'';
-      return `<span style="height:${h}px" class="${cls}" title="${t.month}: ${t.cases}"></span>`;
+  stateMsg.style.display = 'none';
+
+  grid.innerHTML = orgs.map(o => buildCard(o)).join('');
+  grid.querySelectorAll('.org-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      expandedId = expandedId===id ? null : id;
+      render();
+    });
+  });
+}
+
+function buildCard(o) {
+  const st = o.statuses || {};
+  const nr = st.needs_response || 0;
+  const ip = st.in_progress || 0;
+  const won= st.won || 0;
+
+  // Win rate colour
+  const wrClass = o.win_rate==null?'na':o.win_rate>=50?'good':o.win_rate>=20?'warn':'bad';
+  const lrClass = o.loss_rate==null?'na':o.loss_rate>20?'bad':o.loss_rate>5?'warn':'good';
+
+  // Badge
+  let badge = '';
+  if (nr>0) badge += `<span class="badge badge-warn">${nr} NR</span>`;
+  if (ip>0) badge += `<span class="badge badge-active">${ip} active</span>`;
+  if (won>0) badge += `<span class="badge badge-ok">${won} won</span>`;
+  if (!badge) badge = '<span class="badge badge-neutral">—</span>';
+
+  // Status chips (top 4)
+  const statusChips = Object.entries(st)
+    .filter(([,v])=>v>0)
+    .sort((a,b)=>b[1]-a[1]).slice(0,5)
+    .map(([k,v])=>{
+      const [fg,bg] = STATUS_COLORS[k]||['#7A7568','#F0EDE8'];
+      return `<span class="status-chip" style="background:${bg};color:${fg}">${STATUS_LABEL[k]||k} <strong>${v}</strong></span>`;
     }).join('');
-    const spikeHtml = org.spike?.detected
-      ? `<span class="pill pill-spike">+${org.spike.ratio}× ⚠</span>`
-      : `<span class="pill pill-gray">—</span>`;
-    const tr = document.createElement('tr');
-    if (expandedId===org.org_id) tr.classList.add('expanded');
-    tr.innerHTML = `
-      <td><div class="org-name">${esc(trunc(org.customer,34))}</div><div class="org-id">${esc(org.org_id)}</div></td>
-      <td class="num"><strong>${org.total_cases.toLocaleString()}</strong></td>
-      <td class="num">${fmt(org.total_usd)}</td>
-      <td class="num" style="color:${org.win_rate>=50?'#0f6e56':'#888780'}">${pct(org.win_rate)}</td>
-      <td class="num" style="color:${org.loss_rate>5?'#791f1f':'#1a1a18'}">${pct(org.loss_rate)}</td>
-      <td class="num" style="color:#5f5e5a;font-size:11px">${esc(trunc(org.top_reasons[0]?.label||'—',24))}</td>
-      <td><div class="trend-bar">${trendBars}</div></td>
-      <td>${spikeHtml}</td>`;
-    tr.addEventListener('click',()=>toggleExpand(org));
-    tbody.appendChild(tr);
-    if (expandedId===org.org_id) {
-      const exp = document.createElement('tr');
-      exp.className='expand-row';
-      exp.innerHTML=`<td colspan="8">${buildExpand(org)}</td>`;
-      tbody.appendChild(exp);
-    }
-  }
-}
 
-function toggleExpand(org) {
-  expandedId = expandedId===org.org_id ? null : org.org_id;
-  render();
-}
-
-function buildExpand(org) {
-  const sc = {won:'#1D9E75',refunded:'#378ADD',in_progress:'#EF9F27',
-               lost:'#E24B4A',not_eligible:'#888780',stopped:'#b4b2a9',other:'#d3d1c7'};
-  const statusHtml = Object.entries(org.statuses).map(([k,v])=>
-    `<div class="status-item">
-      <span><span class="status-dot" style="background:${sc[k]||'#ccc'}"></span>${k.replace('_',' ')}</span>
-      <strong>${v}</strong>
-    </div>`).join('');
-  const reasonHtml = org.top_reasons.slice(0,5).map(r=>
-    `<div class="detail-row">
-      <span class="detail-label" title="${esc(r.label)}">${esc(trunc(r.label,28))}</span>
-      <span class="detail-val">${r.count}</span>
-    </div>`).join('') || '<div class="detail-row"><span class="detail-label">—</span></div>';
-  const merchantHtml = org.top_merchants.slice(0,5).map(m=>
-    `<div class="detail-row">
-      <span class="detail-label" title="${esc(m.label)}">${esc(trunc(m.label,26))}</span>
-      <span class="detail-val">${m.count}</span>
-    </div>`).join('') || '<div class="detail-row"><span class="detail-label">—</span></div>';
-  const tMax = Math.max(...org.trend.map(t=>t.cases),1);
-  const miniBars = org.trend.map((t,i)=>{
-    const h=Math.round(t.cases/tMax*40)||2;
-    const col=i===org.trend.length-1?(org.spike?.detected?'#e24b4a':'#0c447c'):'#b5d4f4';
-    return `<div class="mini-bar" style="height:${h}px;background:${col}" title="${t.month}: ${t.cases} cases">
-              <span>${t.month.slice(5)}</span></div>`;
+  // Trend bars
+  const maxCases = Math.max(...(o.trend||[]).map(t=>t.cases),1);
+  const trendBars = (o.trend||[]).map((t,i)=>{
+    const h = Math.max(Math.round(t.cases/maxCases*100),2);
+    const isLast = i===o.trend.length-1;
+    const cls = isLast ? 'current' : '';
+    return `<div class="trend-col">
+      <div class="trend-bar-wrap" style="height:36px">
+        <div class="trend-bar-inner ${cls}" style="height:${h}%" title="${t.month}: ${t.cases} cases"></div>
+      </div>
+      <div class="trend-month">${t.month.slice(5)}</div>
+    </div>`;
   }).join('');
-  return `<div class="expand-inner">
-    <div class="detail-block">
-      <h4>Status breakdown</h4>
-      <div class="status-grid">${statusHtml}</div>
+
+  // Expand content
+  const isOpen = expandedId === o.org_id;
+  const expandHtml = isOpen ? buildExpand(o) : '';
+
+  return `<div class="org-card${isOpen?' expanded':''}" data-id="${esc(o.org_id)}">
+    <div class="card-head">
+      <div class="card-head-left">
+        <div class="card-org-name" title="${esc(o.customer)}">${esc(trunc(o.customer,36))}</div>
+        <div class="card-org-id">org_id: ${esc(o.org_id)}</div>
+      </div>
+      <div class="card-badges">${badge}</div>
     </div>
-    <div class="detail-block">
-      <h4>Top dispute reasons</h4>${reasonHtml}
+    <div class="card-metrics">
+      <div class="metric">
+        <div class="metric-val">${o.total_cases}</div>
+        <div class="metric-label">Cases</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val ${wrClass}">${fmtPct(o.win_rate)}</div>
+        <div class="metric-label">Win rate</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">${fmtUSD(o.total_usd)}</div>
+        <div class="metric-label">Total USD</div>
+      </div>
     </div>
-    <div class="detail-block">
-      <h4>Top merchants</h4>${merchantHtml}
-    </div>
-    <div class="detail-block">
-      <h4>6-month trend</h4>
-      <div class="mini-bars">${miniBars}</div>
-      ${org.spike?.detected
-        ? `<div style="margin-top:8px;font-size:11px;color:#633806;background:#faeeda;padding:6px 8px;border-radius:6px">
-             ⚠ ${org.spike.prev_cases} → ${org.spike.recent_cases} cases (${org.spike.ratio}×) ${org.spike.prev_month} → ${org.spike.recent_month}
-           </div>` : ''}
+    <div class="status-row">${statusChips||'<span style="color:var(--subtle);font-size:11px">No status data</span>'}</div>
+    <div class="card-trend">${trendBars}</div>
+    <div class="card-expand${isOpen?' open':''}">
+      ${expandHtml}
     </div>
   </div>`;
 }
 
-function esc(s) {
-  return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function buildExpand(o) {
+  const reasonRows = (o.top_reasons||[]).slice(0,5).map(r=>
+    `<div class="expand-row"><span class="expand-row-label" title="${esc(r.label)}">${esc(trunc(r.label,26))}</span><span class="expand-row-val">${r.count}</span></div>`
+  ).join('') || '<div class="expand-row"><span class="expand-row-label">—</span></div>';
+
+  const merchantRows = (o.top_merchants||[]).slice(0,5).map(m=>
+    `<div class="expand-row"><span class="expand-row-label" title="${esc(m.label)}">${esc(trunc(m.label,26))}</span><span class="expand-row-val">${m.count}</span></div>`
+  ).join('') || '<div class="expand-row"><span class="expand-row-label">—</span></div>';
+
+  const rawStatusRows = (o.raw_statuses||[]).slice(0,6).map(r=>
+    `<div class="expand-row"><span class="expand-row-label" title="${esc(r.label)}">${esc(trunc(r.label,26))}</span><span class="expand-row-val">${r.count}</span></div>`
+  ).join('') || '<div class="expand-row"><span class="expand-row-label">—</span></div>';
+
+  const processorRows = (o.top_processors||[]).map(p=>
+    `<div class="expand-row"><span class="expand-row-label">${esc(p.label)}</span><span class="expand-row-val">${p.count}</span></div>`
+  ).join('') || '<div class="expand-row"><span class="expand-row-label">—</span></div>';
+
+  return `<div class="expand-grid">
+    <div class="expand-block">
+      <h5>Dispute reasons</h5>${reasonRows}
+    </div>
+    <div class="expand-block">
+      <h5>Top merchants</h5>${merchantRows}
+    </div>
+    <div class="expand-block">
+      <h5>Status breakdown (tracker)</h5>${rawStatusRows}
+    </div>
+    <div class="expand-block">
+      <h5>Processor / Card type</h5>
+      ${processorRows}
+      ${Object.entries(o.card_types||{}).map(([k,v])=>
+        `<div class="expand-row"><span class="expand-row-label">${esc(k)}</span><span class="expand-row-val">${v}</span></div>`
+      ).join('')}
+    </div>
+  </div>`;
 }
 
 load();
