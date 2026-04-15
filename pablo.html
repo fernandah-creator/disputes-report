@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Repetitive Dispute Patterns - Jeeves</title>
-<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:#F5F4F0;color:#1a1a18;font-size:13px;line-height:1.5}
 .topbar{background:#1a1a18;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
 .brand{font-size:10px;font-weight:600;letter-spacing:.13em;color:#666}
@@ -28,11 +29,7 @@ select.fp{padding-right:20px;appearance:none}
 .sw input:focus{border-color:#b4b2a9}
 .sw-ico{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#aaa;pointer-events:none}
 .rc{font-size:11px;color:#888;margin-left:auto}
-.loading-msg{text-align:center;padding:80px 20px;color:#888;font-size:14px}
-.loading-msg strong{display:block;font-size:16px;color:#333;margin-bottom:8px}
-.spinner{width:24px;height:24px;border:2px solid #e8e4dc;border-top-color:#888;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.main{max-width:100%;margin:0;padding:20px 20px 60px}
+.main{padding:20px 20px 60px}
 .shd{font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:#888;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .shd::after{content:"";flex:1;height:1px;background:#e8e4dc}
 .tbl{background:#fff;border:1px solid #e8e4dc;border-radius:10px;overflow:hidden;width:100%}
@@ -65,9 +62,9 @@ select.fp{padding-right:20px;appearance:none}
 .mbar.spike{background:#e24b4a}
 .mbar.hl{background:#4A7FC0}
 .expand-arrow{font-size:18px;color:#b4b2a9;transition:transform .2s,color .15s;display:inline-block;line-height:1}
-.trow.exp .expand-arrow{transform:rotate(90deg);color:#1a1a18}
 .trow:hover .expand-arrow{color:#444}
-.exp-inner{padding:16px 20px;background:#fafaf8;border-bottom:1px solid #e8e4dc;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.trow.exp .expand-arrow{transform:rotate(90deg);color:#1a1a18}
+.exp-inner{padding:16px 20px;background:#fafaf8;border-bottom:1px solid #e8e4dc;display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .exp-h{font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#888;margin-bottom:10px}
 .exp-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:.5px solid #f0ede8;font-size:11px;color:#555}
 .exp-row:last-child{border-bottom:none}
@@ -80,34 +77,39 @@ select.fp{padding-right:20px;appearance:none}
 .ai-box.high{background:#fcebeb;border:1px solid rgba(121,31,31,.15);color:#3a1010}
 .ai-box.watch{background:#faeeda;border:1px solid rgba(122,74,0,.15);color:#3a2500}
 .ai-box.ok{background:#eaf3de;border:1px solid rgba(39,80,10,.15);color:#1a3008}
-.ai-box.loading{background:#f5f4f0;border:1px solid #e0ddd5;color:#888;font-style:italic}
+.ai-box.loading{background:#f5f4f0;border:1px solid #e0ddd5;color:#888;font-style:italic;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .ai-label{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;opacity:.7}
 .ai-rec{margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.08)}
 .ai-rec-label{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px;opacity:.7}
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px;color:#888;gap:12px}
+.loading-screen .spinner{width:24px;height:24px;border:2px solid #e0ddd5;border-top-color:#1a1a18;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .glossary{margin-top:20px;background:#fff;border:1px solid #e8e4dc;border-radius:10px;padding:16px 20px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
 .gl-t{font-size:12px;font-weight:500;margin-bottom:3px}
 .gl-d{font-size:11px;color:#888;line-height:1.5}
 .empty{text-align:center;padding:60px;color:#888}
 .empty strong{display:block;font-size:15px;color:#333;margin-bottom:5px}
-.last-updated{font-size:10px;color:#aaa;margin-top:4px}</style>
+.updated-badge{font-size:10px;color:#888;background:#f5f4f0;border:1px solid #e0ddd5;border-radius:5px;padding:3px 8px;margin-left:10px}
+</style>
 </head>
 <body>
+
 <div class="topbar">
   <div style="display:flex;align-items:center">
     <span class="brand">JEEVES</span>
     <span class="ttitle">Repetitive dispute patterns</span>
   </div>
-  <div style="text-align:right">
-    <div class="tdate" id="tdate">Loading...</div>
-    <div class="last-updated" id="last-updated"></div>
-  </div>
+  <span class="tdate" id="tdate">Loading...</span>
 </div>
+
 <div class="statsbar">
   <div class="stat"><div class="stat-l">Flagged orgs</div><div class="stat-v" id="s0">-</div></div>
   <div class="stat"><div class="stat-l">Total disputes analysed</div><div class="stat-v" id="s1">-</div></div>
   <div class="stat"><div class="stat-l">Needs response now</div><div class="stat-v warn" id="s2">-</div></div>
   <div class="stat"><div class="stat-l">Data range</div><div class="stat-v" style="font-size:13px" id="s3">-</div></div>
 </div>
+
 <div class="filters">
   <span class="fl">Period</span>
   <button class="fp on" onclick="setQuick('',event)">All time</button>
@@ -126,21 +128,22 @@ select.fp{padding-right:20px;appearance:none}
   <div class="sw"><span class="sw-ico">&#9906;</span><input type="text" id="q" placeholder="Search org name or ID..." oninput="render()"></div>
   <span class="rc" id="rc"></span>
 </div>
+
 <div class="main">
-  <div class="shd" id="sec-hd">Repetitive dispute patterns</div>
-  <div class="tbl" id="tbl-container">
-    <div class="loading-msg"><div class="spinner"></div><strong>Loading...</strong></div>
-  </div>
-  <div class="glossary">
-    <div><div class="gl-t">Months active</div><div class="gl-d">How many months this org opened at least one dispute. Higher = more persistent pattern.</div></div>
-    <div><div class="gl-t">Top reason %</div><div class="gl-d">What % of disputes use the same reason. 100% = always identical — abnormal.</div></div>
-    <div><div class="gl-t">Win rate</div><div class="gl-d">% of disputes confirmed as fraud by the card network. High win rate + repetitive pattern = real and persistent fraud.</div></div>
-    <div><div class="gl-t">Risk flag</div><div class="gl-d">High risk: 4+ months AND 30+ disputes. Watch: 2+ months AND 10+ disputes.</div></div>
-    <div><div class="gl-t">AI analysis</div><div class="gl-d">Click any row to see AI pattern analysis and rule recommendations. Updates automatically with new data.</div></div>
+  <div class="shd" id="sec-hd">Loading data...</div>
+  <div id="tbl-wrap">
+    <div class="loading-screen">
+      <div class="spinner"></div>
+      <span>Loading latest dispute data...</span>
+    </div>
   </div>
 </div>
+
 <script>
-var DISPUTES_URL = 'https://fernandah-creator.github.io/disputes-report/disputes.json';
+var DISPUTES_URL = "https://fernandah-creator.github.io/disputes-report/disputes.json";
+var ORGS = [], META = {}, MONTHS_ALL = [];
+var sortKey = "score", sortAsc = false, expandedId = null, aiCache = {};
+
 var RLABELS = {
   "transaction_not_recognised":"Transaction not recognised",
   "transaction_not_authorised":"Transaction not authorised",
@@ -150,148 +153,156 @@ var RLABELS = {
   "service_not_as_described":"Service not as described",
   "other":"Other"
 };
-var ORGS = [];
-var META = {};
-var aiCache = {};
-var sortKey = 'score', sortAsc = false, expandedId = null;
-
 function rl(k){ return RLABELS[k] || k; }
-function fmtP(v){ return v==null?'n/a':v.toFixed(1)+'%'; }
-function escH(s){ var d=document.createElement('div'); d.appendChild(document.createTextNode(String(s||''))); return d.innerHTML; }
-function trunc(s,n){ n=n||30; s=String(s||''); return s.length>n?s.slice(0,n)+'...':s; }
+function fmtP(v){ return v==null?"n/a":v.toFixed(1)+"%"; }
+function escH(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(String(s||""))); return d.innerHTML; }
+function trunc(s,n){ n=n||30; s=String(s||""); return s.length>n?s.slice(0,n)+"...":s; }
 
-function getFlag(o){
-  if(o.n_months>=4&&o.total_cases>=30) return 'high';
-  if(o.n_months>=2&&o.total_cases>=10) return 'watch';
-  return 'ok';
-}
-function getFlagOrd(o){ var f=getFlag(o); return f==='high'?0:f==='watch'?1:2; }
-function getMonthsInRange(o,fr,to){ return o.trend.filter(function(t){return(!fr||t.month>=fr)&&(!to||t.month<=to)&&t.cases>0;}).length; }
-function getCasesInRange(o,fr,to){ return o.trend.reduce(function(a,t){return(!fr||t.month>=fr)&&(!to||t.month<=to)?a+t.cases:a;},0); }
-
-// Processa o disputes.json (formato completo) para o formato que a página precisa
-function processDisputesJson(data) {
-  var orgs = data.orgs || [];
-  var months_all = data.months_range ? [] : [];
-
-  // Recolhe todos os meses do trend
-  var monthsSet = {};
-  orgs.forEach(function(o){
-    (o.trend||[]).forEach(function(t){ monthsSet[t.month]=1; });
-  });
-  var allMonths = Object.keys(monthsSet).sort();
-
-  // Filtra só orgs com 2+ meses activos
+// --- Processa o disputes.json (formato raw do Metabase) ---
+function processData(raw) {
+  var months_set = new Set();
   var processed = [];
-  orgs.forEach(function(o){
-    var activeMonths = (o.trend||[]).filter(function(t){return t.cases>0;}).length;
-    if(activeMonths < 2) return;
 
-    var topReason = o.top_reasons && o.top_reasons[0] ? o.top_reasons[0].label : 'other';
-    var topReasonCount = o.top_reasons && o.top_reasons[0] ? o.top_reasons[0].count : 0;
-    var topReasonPct = o.total_cases > 0 ? Math.round(topReasonCount/o.total_cases*100*10)/10 : 0;
-    var suspScore = activeMonths * (topReasonPct/100) * Math.sqrt(o.total_cases);
+  raw.orgs.forEach(function(o) {
+    // Calcula meses activos
+    var active_months = o.trend.filter(function(t){ return t.cases > 0; });
+    var n_months = active_months.length;
+    if(n_months < 2) return; // só orgs com 2+ meses
+
+    o.trend.forEach(function(t){ if(t.cases>0) months_set.add(t.month); });
+
+    // Top reason
+    var top_r = o.top_reasons[0] || {label:"other", count:0};
+    var top_reason_pct = o.total_cases > 0 ? Math.round(top_r.count/o.total_cases*1000)/10 : 0;
+
+    // Score de suspeita
+    var suspicion = Math.round(n_months * (top_reason_pct/100) * Math.pow(o.total_cases, 0.5) * 100)/100;
+
+    // Statuses
+    var statuses = o.raw_statuses || [];
+    var nr = (o.statuses||{}).needs_response || 0;
+    var won = (o.statuses||{}).won || 0;
 
     processed.push({
-      org_id: o.org_id,
-      customer: o.customer,
-      total_cases: o.total_cases,
-      n_months: activeMonths,
-      top_reason: topReason,
-      top_reason_pct: topReasonPct,
-      top_reason_count: topReasonCount,
-      suspicion_score: Math.round(suspScore*100)/100,
-      top_reasons: o.top_reasons || [],
-      top_merchants: o.top_merchants || [],
-      trend: o.trend || [],
-      win_rate: o.win_rate,
-      statuses: o.raw_statuses || [],
-      needs_response: o.statuses ? (o.statuses.needs_response||0) : 0,
-      in_progress: o.statuses ? (o.statuses.in_progress||0) : 0,
-      ai_analysis: o.ai_analysis || '',
-      ai_recommendation: o.ai_recommendation || ''
+      org_id:          o.org_id,
+      customer:        o.customer,
+      total_cases:     o.total_cases,
+      total_usd:       o.total_usd,
+      avg_usd:         o.avg_usd,
+      win_rate:        o.win_rate,
+      n_months:        n_months,
+      top_reason:      top_r.label,
+      top_reason_pct:  top_reason_pct,
+      top_reasons:     o.top_reasons.slice(0,5),
+      top_merchants:   o.top_merchants.slice(0,5),
+      trend:           o.trend,
+      statuses:        statuses,
+      needs_response:  nr,
+      won:             won,
+      suspicion_score: suspicion
     });
   });
 
-  processed.sort(function(a,b){ return b.suspicion_score - a.suspicion_score; });
-  return { orgs: processed, months: allMonths, meta: data };
+  MONTHS_ALL = Array.from(months_set).sort();
+  return processed;
 }
 
-// Carrega dados do GitHub Pages
+// --- Inicializa filtros de mês ---
+function initMonthSelects() {
+  var from = document.getElementById("dt-from");
+  var to   = document.getElementById("dt-to");
+  MONTHS_ALL.forEach(function(m) {
+    var o1 = document.createElement("option"); o1.value=m; o1.textContent=m; from.appendChild(o1);
+    var o2 = document.createElement("option"); o2.value=m; o2.textContent=m; to.appendChild(o2);
+  });
+}
+
+// --- Carrega dados do GitHub Pages ---
 function loadData() {
-  document.getElementById('tbl-container').innerHTML =
-    "<div class='loading-msg'><div class='spinner'></div><strong>Loading dispute data...</strong>Fetching from GitHub Pages...</div>";
+  fetch(DISPUTES_URL + "?t=" + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(raw) {
+      ORGS = processData(raw);
+      META = {
+        total_cases: raw.total_cases,
+        total_orgs:  raw.total_orgs,
+        generated:   raw.generated_at ? raw.generated_at.slice(0,10) : "—",
+        range:       raw.months_range.from + " to " + raw.months_range.to
+      };
 
-  fetch(DISPUTES_URL + '?t=' + Date.now())
-    .then(function(r){
-      if(!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function(data) {
-      var result = processDisputesJson(data);
-      ORGS = result.orgs;
-      META = data;
-      var months = result.months;
+      var totNR = ORGS.reduce(function(a,o){ return a+o.needs_response; }, 0);
+      document.getElementById("s0").textContent = ORGS.length + " orgs";
+      document.getElementById("s1").textContent = META.total_cases.toLocaleString();
+      document.getElementById("s2").textContent = totNR;
+      document.getElementById("s3").textContent = META.range.replace(" to ", " → ");
+      document.getElementById("tdate").textContent = "Updated " + META.generated + " · " + META.range.replace(" to ", " → ");
 
-      // Preenche os selects de mês
-      var opts = '<option value="">All time</option>' +
-        months.map(function(m){ return '<option value="'+m+'">'+m+'</option>'; }).join('');
-      document.getElementById('dt-from').innerHTML = opts;
-      document.getElementById('dt-to').innerHTML = '<option value="">Latest</option>' +
-        months.map(function(m){ return '<option value="'+m+'">'+m+'</option>'; }).join('');
+      initMonthSelects();
 
-      // Stats
-      var totNR = ORGS.reduce(function(a,o){return a+o.needs_response;},0);
-      var range = (data.months_range||{});
-      document.getElementById('s0').textContent = ORGS.length + ' orgs';
-      document.getElementById('s1').textContent = (data.total_cases||0).toLocaleString();
-      document.getElementById('s2').textContent = totNR;
-      document.getElementById('s3').textContent = (range.from||'?') + ' \u2192 ' + (range.to||'?');
-      document.getElementById('tdate').textContent = (range.from||'?') + ' \u2192 ' + (range.to||'?');
-      document.getElementById('last-updated').textContent = 'Updated ' + (data.generated_at||'').slice(0,10);
+      document.getElementById("tbl-wrap").innerHTML =
+        '<div class="tbl">' +
+        '<div class="thead">' +
+        '<div class="th sorted" id="th-score" onclick="sort(\'score\')">Organisation</div>' +
+        '<div class="th" id="th-flag" onclick="sort(\'flag\')">Risk</div>' +
+        '<div class="th" id="th-months" onclick="sort(\'months\')">Months active</div>' +
+        '<div class="th" id="th-cases" onclick="sort(\'cases\')">Total disputes</div>' +
+        '<div class="th" id="th-wr" onclick="sort(\'wr\')">Win rate</div>' +
+        '<div class="th">Top reason (% of cases)</div>' +
+        '<div class="th" style="text-align:right">Details</div>' +
+        '</div>' +
+        '<div id="tbody"></div>' +
+        '</div>' +
+        '<div class="glossary">' +
+        '<div><div class="gl-t">Months active</div><div class="gl-d">How many months this org opened at least one dispute. Higher = more persistent pattern.</div></div>' +
+        '<div><div class="gl-t">Top reason %</div><div class="gl-d">What % of disputes use the same reason. 100% = always identical — abnormal.</div></div>' +
+        '<div><div class="gl-t">Win rate</div><div class="gl-d">% of disputes confirmed as fraud by the card network. High win rate + repetitive pattern = network is validating the fraud.</div></div>' +
+        '<div><div class="gl-t">Risk flag</div><div class="gl-d">High risk: 4+ months AND 30+ disputes. Watch: 2+ months AND 10+ disputes.</div></div>' +
+        '<div><div class="gl-t">AI analysis</div><div class="gl-d">Click any row to see AI pattern analysis and suggested fraud rule changes, generated in real time.</div></div>' +
+        '</div>';
 
       render();
     })
     .catch(function(err) {
-      document.getElementById('tbl-container').innerHTML =
-        "<div class='loading-msg'><strong>Could not load data</strong>" +
-        "Make sure the N8n workflow has run and disputes.json is published.<br>" +
-        "<small style='color:#aaa'>"+err.message+"</small></div>";
+      document.getElementById("tbl-wrap").innerHTML =
+        '<div class="empty"><strong>Failed to load data</strong>' + err.message + '</div>';
     });
 }
 
-var MONTHS_ALL = [];
+function getFlag(o){ if(o.n_months>=4&&o.total_cases>=30)return"high"; if(o.n_months>=2&&o.total_cases>=10)return"watch"; return"ok"; }
+function getFlagOrd(o){ var f=getFlag(o); return f==="high"?0:f==="watch"?1:2; }
+function getMonthsInRange(o,fr,to){ return o.trend.filter(function(t){return(!fr||t.month>=fr)&&(!to||t.month<=to)&&t.cases>0;}).length; }
+function getCasesInRange(o,fr,to){ return o.trend.reduce(function(a,t){return(!fr||t.month>=fr)&&(!to||t.month<=to)?a+t.cases:a;},0); }
+
 function setQuick(mode,e){
-  document.querySelectorAll('.filters button.fp').forEach(function(b){b.classList.remove('on');});
-  if(e) e.target.classList.add('on');
-  var opts = Array.from(document.getElementById('dt-from').options).map(function(o){return o.value;}).filter(Boolean);
-  var n = opts.length;
-  if(mode==='3m'){ document.getElementById('dt-from').value=opts[Math.max(0,n-3)]||''; document.getElementById('dt-to').value=''; }
-  else if(mode==='6m'){ document.getElementById('dt-from').value=opts[Math.max(0,n-6)]||''; document.getElementById('dt-to').value=''; }
-  else{ document.getElementById('dt-from').value=''; document.getElementById('dt-to').value=''; }
+  document.querySelectorAll(".filters button.fp").forEach(function(b){b.classList.remove("on");});
+  if(e) e.target.classList.add("on");
+  var n = MONTHS_ALL.length;
+  if(mode==="3m"){ document.getElementById("dt-from").value=MONTHS_ALL[Math.max(0,n-3)]||""; document.getElementById("dt-to").value=""; }
+  else if(mode==="6m"){ document.getElementById("dt-from").value=MONTHS_ALL[Math.max(0,n-6)]||""; document.getElementById("dt-to").value=""; }
+  else{ document.getElementById("dt-from").value=""; document.getElementById("dt-to").value=""; }
   render();
 }
-function clearQuick(){ document.querySelectorAll('.filters button.fp').forEach(function(b){b.classList.remove('on');}); }
+function clearQuick(){ document.querySelectorAll(".filters button.fp").forEach(function(b){b.classList.remove("on");}); }
 
 function sort(key){
   if(sortKey===key){sortAsc=!sortAsc;}else{sortKey=key;sortAsc=false;}
-  document.querySelectorAll('.th').forEach(function(th){th.classList.remove('sorted','asc');});
-  var el=document.getElementById('th-'+key);
-  if(el){el.classList.add('sorted');if(sortAsc)el.classList.add('asc');}
+  document.querySelectorAll(".th").forEach(function(th){th.classList.remove("sorted","asc");});
+  var el=document.getElementById("th-"+key);
+  if(el){el.classList.add("sorted");if(sortAsc)el.classList.add("asc");}
   render();
 }
 
 function buildRow(o){
-  var fr=document.getElementById('dt-from').value;
-  var to=document.getElementById('dt-to').value;
+  var fr=document.getElementById("dt-from")?document.getElementById("dt-from").value:"";
+  var to=document.getElementById("dt-to")?document.getElementById("dt-to").value:"";
   var months=(fr||to)?getMonthsInRange(o,fr,to):o.n_months;
   var cases=(fr||to)?getCasesInRange(o,fr,to):o.total_cases;
   var reason=rl(o.top_reason);
   var pct=o.top_reason_pct;
   var flag=getFlag(o);
-  var flagLbl=flag==='high'?'High risk':flag==='watch'?'Watch':'Normal';
-  var wrCls=o.win_rate==null?'m':o.win_rate>=50?'r':o.win_rate>=20?'a':'m';
-  var mCls=months>=4?'r':months>=2?'a':'td';
+  var flagLbl=flag==="high"?"High risk":flag==="watch"?"Watch":"Normal";
+  var wrCls=o.win_rate==null?"m":o.win_rate>=50?"r":o.win_rate>=20?"a":"m";
+  var mCls=months>=4?"r":months>=2?"a":"td";
   var maxC=Math.max.apply(null,o.trend.map(function(t){return t.cases;}));
   if(maxC<1)maxC=1;
   var avg=cases/Math.max(months,1);
@@ -299,12 +310,12 @@ function buildRow(o){
     var h=Math.max(Math.round(t.cases/maxC*34),t.cases>0?3:0);
     var isCur=t.month===o.trend[o.trend.length-1].month;
     var isHl=(fr||to)&&(!fr||t.month>=fr)&&(!to||t.month<=to);
-    var cls=isHl?'hl':(isCur?'cur':'');
-    if(!isHl&&!isCur&&t.cases>avg*1.8&&t.cases>3)cls='spike';
+    var cls=isHl?"hl":(isCur?"cur":"");
+    if(!isHl&&!isCur&&t.cases>avg*1.8&&t.cases>3)cls="spike";
     return "<div class='mbar "+cls+"' style='height:"+h+"px' title='"+t.month+": "+t.cases+"'></div>";
-  }).join('');
+  }).join("");
   var isExp=expandedId===o.org_id;
-  var row="<div class='trow"+(isExp?' exp':'')+"' onclick='toggle(this.dataset.id)' data-id='"+escH(o.org_id)+"'>";
+  var row="<div class='trow"+(isExp?" exp":"")+"' onclick='toggle(this.dataset.id)' data-id='"+escH(o.org_id)+"'>";
   row+="<div><div class='oname' title='"+escH(o.customer)+"'>"+escH(trunc(o.customer,40))+"</div><div class='oid'>org_id: "+escH(o.org_id)+"</div></div>";
   row+="<div><span class='pill "+flag+"'>"+flagLbl+"</span></div>";
   row+="<div class='td "+mCls+"'>"+months+"</div>";
@@ -313,12 +324,13 @@ function buildRow(o){
   row+="<div><span class='rtag' title='"+escH(reason)+"'>"+escH(trunc(reason,30))+"</span><span class='pct'>"+pct+"%</span></div>";
   row+="<div style='display:flex;align-items:center;justify-content:flex-end;gap:8px'><div class='mbars'>"+bars+"</div><span class='expand-arrow'>&#8250;</span></div>";
   row+="</div>";
-  if(isExp){row+=buildExpand(o,flag);}
+  if(isExp){ row+=buildExpand(o,flag); }
   return row;
 }
 
 function buildExpand(o,flag){
   var h="<div class='exp-inner'>";
+  // Coluna esquerda
   h+="<div>";
   var maxR=o.top_reasons[0]?o.top_reasons[0].count:1;
   h+="<div class='exp-h'>Dispute reasons</div>";
@@ -339,22 +351,15 @@ function buildExpand(o,flag){
     h+="<div class='exp-row'><span class='exp-lbl'>"+escH(trunc(s.label,28))+"</span><span class='exp-val'>"+s.count+"</span></div>";
   });
   h+="</div>";
+  // Coluna direita — AI
   h+="<div>";
   h+="<div class='exp-h'>AI pattern analysis</div>";
-
-  // Usa análise pré-computada se existir
-  var analysis = o.ai_analysis || aiCache[o.org_id] && aiCache[o.org_id].analysis;
-  var recommendation = o.ai_recommendation || aiCache[o.org_id] && aiCache[o.org_id].recommendation;
-
-  if(analysis){
-    h+="<div class='ai-box "+flag+"'><div class='ai-label'>Pattern detected</div>"+escH(analysis);
-    if(recommendation){
-      h+="<div class='ai-rec'><div class='ai-rec-label'>Rule recommendation</div>"+escH(recommendation)+"</div>";
-    }
-    h+="</div>";
+  if(aiCache[o.org_id]){
+    var ai=aiCache[o.org_id];
+    h+="<div class='ai-box "+flag+"'><div class='ai-label'>Pattern detected</div>"+escH(ai.analysis)+"<div class='ai-rec'><div class='ai-rec-label'>Rule recommendation</div>"+escH(ai.recommendation)+"</div></div>";
   } else {
     h+="<div class='ai-box loading' id='ai-"+escH(o.org_id)+"'>Generating AI analysis...</div>";
-    setTimeout(function(){generateAI(o,flag);},50);
+    setTimeout(function(){ generateAI(o, flag); }, 50);
   }
   h+="</div>";
   h+="</div>";
@@ -362,74 +367,73 @@ function buildExpand(o,flag){
 }
 
 function render(){
-  var q=document.getElementById('q').value.toLowerCase().trim();
-  var fr=document.getElementById('dt-from').value;
-  var to=document.getElementById('dt-to').value;
+  if(!document.getElementById("tbody")) return;
+  var q=document.getElementById("q").value.toLowerCase().trim();
+  var fr=document.getElementById("dt-from").value;
+  var to=document.getElementById("dt-to").value;
   var list=ORGS.slice();
-  if(fr||to)list=list.filter(function(o){return o.trend.some(function(t){return(!fr||t.month>=fr)&&(!to||t.month<=to)&&t.cases>0;});});
-  if(q)list=list.filter(function(o){return o.customer.toLowerCase().indexOf(q)>=0||o.org_id.indexOf(q)>=0;});
+  if(fr||to) list=list.filter(function(o){return o.trend.some(function(t){return(!fr||t.month>=fr)&&(!to||t.month<=to)&&t.cases>0;});});
+  if(q) list=list.filter(function(o){return o.customer.toLowerCase().indexOf(q)>=0||o.org_id.indexOf(q)>=0;});
   list.sort(function(a,b){
     var va,vb;
-    if(sortKey==='months'){va=(fr||to)?getMonthsInRange(a,fr,to):a.n_months;vb=(fr||to)?getMonthsInRange(b,fr,to):b.n_months;}
-    else if(sortKey==='cases'){va=(fr||to)?getCasesInRange(a,fr,to):a.total_cases;vb=(fr||to)?getCasesInRange(b,fr,to):b.total_cases;}
-    else if(sortKey==='wr'){va=a.win_rate==null?-1:a.win_rate;vb=b.win_rate==null?-1:b.win_rate;}
-    else if(sortKey==='flag'){va=getFlagOrd(a);vb=getFlagOrd(b);}
+    if(sortKey==="months"){va=(fr||to)?getMonthsInRange(a,fr,to):a.n_months;vb=(fr||to)?getMonthsInRange(b,fr,to):b.n_months;}
+    else if(sortKey==="cases"){va=(fr||to)?getCasesInRange(a,fr,to):a.total_cases;vb=(fr||to)?getCasesInRange(b,fr,to):b.total_cases;}
+    else if(sortKey==="wr"){va=a.win_rate==null?-1:a.win_rate;vb=b.win_rate==null?-1:b.win_rate;}
+    else if(sortKey==="flag"){va=getFlagOrd(a);vb=getFlagOrd(b);}
     else{va=a.suspicion_score;vb=b.suspicion_score;}
     return sortAsc?va-vb:vb-va;
   });
-  document.getElementById('rc').textContent=list.length+' orgs';
-  var hd=(fr||to)?'Filtered results':'Repetitive dispute patterns';
-  document.getElementById('sec-hd').textContent=hd+' \u2014 '+list.length+' orgs with 2+ active months';
-  var html=list.map(buildRow).join('');
-  if(!html)html="<div class='empty'><strong>No results</strong>Try a different search or period.</div>";
-  document.getElementById('tbl-container').innerHTML=
-    "<div class='thead'>"
-    +"<div class='th sorted' id='th-score' onclick='sort(\"score\")'>Organisation</div>"
-    +"<div class='th' id='th-flag' onclick='sort(\"flag\")'>Risk</div>"
-    +"<div class='th' id='th-months' onclick='sort(\"months\")'>Months active</div>"
-    +"<div class='th' id='th-cases' onclick='sort(\"cases\")'>Total disputes</div>"
-    +"<div class='th' id='th-wr' onclick='sort(\"wr\")'>Win rate</div>"
-    +"<div class='th'>Top reason (% of cases)</div>"
-    +"<div class='th' style='text-align:right'>Details</div>"
-    +"</div>"
-    +"<div>"+html+"</div>";
-  // Reaplica sorted class
-  var el=document.getElementById('th-'+sortKey);
-  if(el){el.classList.add('sorted');if(sortAsc)el.classList.add('asc');}
+  document.getElementById("rc").textContent=list.length+" orgs";
+  var hd=(fr||to)?"Filtered results":"Repetitive dispute patterns";
+  document.getElementById("sec-hd").textContent=hd+" — "+list.length+" orgs with 2+ active months";
+  var html=list.map(buildRow).join("");
+  if(!html) html="<div class='empty'><strong>No results</strong>Try a different search or period.</div>";
+  document.getElementById("tbody").innerHTML=html;
 }
 
 function toggle(id){ expandedId=expandedId===id?null:id; render(); }
 
-function generateAI(o,flag){
-  var topReason=rl(o.top_reason);
-  var prompt='You are a fraud analyst at Jeeves, a B2B fintech. Analyse this dispute pattern.\n\nOrg: '+o.customer+' (id: '+o.org_id+')\nRisk: '+flag+'\nMonths active: '+o.n_months+'\nTotal disputes: '+o.total_cases+'\nWin rate: '+(o.win_rate==null?'unknown':o.win_rate+'% (high = network confirmed fraud)')+'\nTop reason: '+topReason+' ('+o.top_reason_pct+'% of cases)\nTop merchants: '+o.top_merchants.slice(0,3).map(function(m){return m.label+' ('+m.count+')';}).join(', ')+'\n\nAvailable rules: MCC blacklist/whitelist, Country blacklist/whitelist, Merchant blacklist/whitelist.\n\nReturn ONLY valid JSON: {"analysis":"2-3 sentences on why suspicious","recommendation":"1-2 sentences on rule changes"}';
+function generateAI(o, flag){
+  var reason=rl(o.top_reason);
+  var topM=o.top_merchants.slice(0,3).map(function(m){return m.label+" ("+m.count+")";}).join(", ");
+  var wrNote=o.win_rate==null?"unknown":o.win_rate+"% (high = card network confirmed fraud)";
+  var prompt=
+    "You are a fraud analyst at Jeeves, a B2B fintech. Analyse this dispute pattern.\n\n"+
+    "Org: "+o.customer+" (id: "+o.org_id+")\n"+
+    "Risk: "+flag+"\n"+
+    "Months active: "+o.n_months+"\n"+
+    "Total disputes: "+o.total_cases+"\n"+
+    "Win rate: "+wrNote+"\n"+
+    "Top reason: "+reason+" ("+o.top_reason_pct+"% of cases)\n"+
+    "Top merchants: "+topM+"\n\n"+
+    "Available rule types: MCC blacklist/whitelist, Country blacklist/whitelist, Merchant blacklist/whitelist.\n\n"+
+    "Return ONLY valid JSON: {\"analysis\": \"2-3 sentences on why suspicious\", \"recommendation\": \"1-2 sentences on rule changes\"}";
 
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:350,messages:[{role:'user',content:prompt}]})
+  fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:350,messages:[{role:"user",content:prompt}]})
   }).then(function(r){return r.json();})
   .then(function(d){
-    var text=(d.content&&d.content[0])?d.content[0].text:'';
+    var text=(d.content&&d.content[0])?d.content[0].text:"";
     try{
-      var p=JSON.parse(text.replace(/```json|```/g,'').trim());
+      var p=JSON.parse(text.replace(/```json|```/g,"").trim());
       aiCache[o.org_id]=p;
-      var el=document.getElementById('ai-'+o.org_id);
+      var el=document.getElementById("ai-"+o.org_id);
       if(el&&p){
-        el.className='ai-box '+flag;
-        el.innerHTML="<div class='ai-label'>Pattern detected</div>"+escH(p.analysis||'')+(p.recommendation?"<div class='ai-rec'><div class='ai-rec-label'>Rule recommendation</div>"+escH(p.recommendation)+'</div>':'');
+        el.className="ai-box "+flag;
+        el.innerHTML="<div class='ai-label'>Pattern detected</div>"+escH(p.analysis||"")+"<div class='ai-rec'><div class='ai-rec-label'>Rule recommendation</div>"+escH(p.recommendation||"")+"</div>";
       }
     }catch(e){
-      var el=document.getElementById('ai-'+o.org_id);
-      if(el)el.textContent='Analysis unavailable.';
+      var el=document.getElementById("ai-"+o.org_id);
+      if(el) el.textContent="Analysis unavailable.";
     }
   }).catch(function(){
-    var el=document.getElementById('ai-'+o.org_id);
-    if(el)el.textContent='Analysis unavailable when opened locally. Open via GitHub Pages for full AI analysis.';
+    var el=document.getElementById("ai-"+o.org_id);
+    if(el) el.textContent="Analysis unavailable (CORS — works on GitHub Pages, not locally).";
   });
 }
 
-// Inicia
 loadData();
 </script>
 </body>
