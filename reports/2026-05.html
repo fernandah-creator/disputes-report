@@ -187,7 +187,7 @@
     </div>
     <div class="ai-body" id="ai-body">
       
-    <p style="font-size:13px;color:#1a1a18;line-height:1.75;margin:0 0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">May saw 526 disputes opened, a spike driven by the recent ATO incident.</p>
+    <p style="font-size:13px;color:#1a1a18;line-height:1.75;margin:0 0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">May saw 526 disputes opened, a significant increase over April.</p>
     <div style="margin-bottom:16px">
       <div style="margin-bottom:8px">
         <button
@@ -203,7 +203,7 @@
           <span style="font-size:10px;opacity:0.6">▾ click for analysis</span>
         </button>
         <div id="ai-detail-0" style="display:none;background:#fdf5f5;border:1px solid #d9b0b0;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#5c1f1f;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
-          Disputes opened jumped from 262 in April to 526 in May. This increase is primarily due to the Account Takeover incident impacting physical cards in Mexico (Tutuka).
+          Disputes opened increased to 526, compared to 262 in April and 204 in March. This spike is primarily due to the ATO incident affecting physical cards in Mexico (Tutuka).
         </div>
       </div>
       <div style="margin-bottom:8px">
@@ -220,7 +220,7 @@
           <span style="font-size:10px;opacity:0.6">▾ click for analysis</span>
         </button>
         <div id="ai-detail-1" style="display:none;background:#f7f6f3;border:1px solid #d8d6cf;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#4a4a47;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
-          A large percentage of disputes (79.5%) are currently in progress. This is expected as the card network resolution window typically takes 45-120 days to resolve.
+          418 disputes are currently in progress, which is normal for the current month given the recent increase in volume. Network resolution windows are typically 45-120 days, so these cases are still under review.
         </div>
       </div>
       <div style="margin-bottom:8px">
@@ -237,12 +237,12 @@
           <span style="font-size:10px;opacity:0.6">▾ click for analysis</span>
         </button>
         <div id="ai-detail-2" style="display:none;background:#fdf9f2;border:1px solid #d9c99a;border-top:none;border-radius:0 0 6px 6px;padding:12px 16px;font-size:12px;color:#5c3d00;line-height:1.75;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px">
-          Credits totaling $44,667 have been issued on cases still in progress. These credits are still at risk and may become confirmed financial losses if the disputes are not won.
+          Credits issued on in-progress cases total $44,667, representing the amount at risk pending the outcome of network reviews. These credits are provisional and may be recovered if the disputes are won.
         </div>
       </div></div>
     
     <div style="font-size:12px;color:#5c3d00;background:#faf5ec;border-left:2px solid #c4a35a;padding:10px 14px;border-radius:0 6px 6px 0;line-height:1.6;font-family:-apple-system,sans-serif">
-      <strong>Watch:</strong> Monitor Taxicabs & Rideshare MCC (12.5%) to determine if the ATO incident is isolated to this sector.
+      <strong>Watch:</strong> Monitor the win rate and loss rate closely over the next two months as the 418 in-progress cases from May are resolved.
     </div>
   
     </div>
@@ -315,7 +315,7 @@
       </div>
       <div class="metric highlight">
         <div class="metric-label">Chargeback BPS</div>
-        <div class="metric-value green">2.94 bps</div>
+        <div class="metric-value green">2.95 bps</div>
         <div class="metric-sub">May · Tutuka processors</div>
       </div>
     </div>
@@ -572,7 +572,7 @@
     <div class="metrics4">
       <div class="metric highlight">
         <div class="metric-label">BPS — May (reporting month)</div>
-        <div class="metric-value green">2.94 bps</div>
+        <div class="metric-value green">2.95 bps</div>
         <div class="metric-sub">Tutuka processors only</div>
       </div>
       <div class="metric">
@@ -581,7 +581,7 @@
       </div>
       <div class="metric">
         <div class="metric-label">BPS — March</div>
-        <div class="metric-value amber">4.24 bps</div>
+        <div class="metric-value amber">4.25 bps</div>
       </div>
       <div class="metric">
         <div class="metric-label">
@@ -804,7 +804,7 @@ new Chart(document.getElementById('bar_reason_compare'),{type:'bar',data:{
   }
 }});
 
-const bpsVals = [4.24,0.88,2.94];
+const bpsVals = [4.25,0.88,2.95];
 new Chart(document.getElementById('bpsLine'),{type:'line',data:{labels:months,datasets:[
   {label:'BPS',data:bpsVals,borderColor:'#1a3d6b',backgroundColor:'rgba(26,61,107,0.08)',
    pointBackgroundColor:bpsVals.map(v=>v==null?'#0c447c':v>=7?'#791f1f':v<=4?'#0f6e56':'#EF9F27'),
